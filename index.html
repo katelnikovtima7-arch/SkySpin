@@ -401,11 +401,19 @@ prizes[currentSector];
         prizeText.innerText =
         `${win} TON`;
 
-        popup.style.display =
-        "block";
+ overlay.style.display = "block";
+popup.style.display = "block";
 
-        overlay.style.display =
-        "block";
+setTimeout(()=>{
+
+    overlay.style.opacity = "1";
+
+    popup.style.opacity = "1";
+
+    popup.style.transform =
+    "translate(-50%,-50%) scale(1)";
+
+},10);
 
         spinning = false;
 
