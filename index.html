@@ -339,6 +339,8 @@ const prizes =
 button.onclick = () => {
 
     if(spinning) return;
+    spinSound.currentTime = 0;
+spinSound.play();
 
     spinning = true;
 
