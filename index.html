@@ -11,9 +11,41 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
 }
-    .wheel-area{
+
+body{
+    min-height:100vh;
+    background:#111827;
+    color:white;
+    display:flex;
+    flex-direction:column;
+}
+
+/* Верх */
+.top{
+    display:flex;
+    justify-content:space-between;
+    padding:20px;
+}
+
+.profile,.balance{
+    background:#1f2937;
+    padding:14px 22px;
+    border-radius:20px;
+    font-size:22px;
+}
+
+/* Центр */
+.center{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+.wheel-area{
     position:relative;
     width:320px;
     height:320px;
@@ -22,99 +54,45 @@
 #wheel{
     width:100%;
     height:100%;
+    display:block;
 }
 
 .pointer{
     position:absolute;
-    top:-15px;
+    top:-8px;
     left:50%;
     transform:translateX(-50%);
     width:0;
     height:0;
-    border-left:20px solid transparent;
-    border-right:20px solid transparent;
-    border-top:40px solid #198cff;
+    border-left:15px solid transparent;
+    border-right:15px solid transparent;
+    border-top:30px solid #198cff;
     z-index:10;
-}
-<script>
-const wheel = document.getElementById("wheel");
-const button = document.querySelector(".spin-btn");
-
-let rotation = 0;
-
-button.onclick = () => {
-    rotation += 1800 + Math.random()*1800;
-
-    wheel.style.transition = "transform 4s ease-out";
-    wheel.style.transform = `rotate(${rotation}deg)`;
-};
-</script>
-body{
-    height:100vh;
-    background:#111827;
-    color:white;
-    display:flex;
-    flex-direction:column;
-}
-
-/* Верхняя панель */
-.top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px;
-}
-
-.profile,
-.balance{
-    background:#1f2937;
-    padding:12px 18px;
-    border-radius:20px;
-}
-
-/* Центральный блок */
-.center{
-    flex:1;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-.game-box{
-    width:280px;
-    height:280px;
-    border-radius:30px;
-    background:#1f2937;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:35px;
-    font-weight:bold;
 }
 
 /* Кнопка */
 .spin-btn{
-    margin:20px;
+    margin-top:30px;
     border:none;
     border-radius:25px;
-    padding:20px;
-    font-size:26px;
+    padding:20px 60px;
+    font-size:32px;
     font-weight:bold;
     background:#198cff;
     color:white;
 }
 
-/* Нижнее меню */
+/* Низ */
 .bottom{
     display:flex;
     justify-content:space-around;
-    padding:15px;
+    padding:20px;
     background:#1a1f2b;
-    border-top:1px solid #2d3748;
 }
 
 .bottom div{
     color:#8e99a8;
+    font-size:24px;
 }
 
 .active{
@@ -129,17 +107,19 @@ body{
     <div class="profile">👤 Профиль</div>
     <div class="balance">💎 0 TON</div>
 </div>
-<div class="wheel-area">
-    <div class="pointer"></div>
-    <img src="IMG_0854.png" id="wheel">
-</div>
-<div class="center">
-    
-</div>
 
-<button class="spin-btn">
-    КРУТИТЬ
-</button>
+<div class="center">
+
+    <div class="wheel-area">
+        <div class="pointer"></div>
+        <img src="IMG_0854.png" id="wheel">
+    </div>
+
+    <button class="spin-btn">
+        КРУТИТЬ
+    </button>
+
+</div>
 
 <div class="bottom">
     <div class="active">🎲 Игра</div>
@@ -147,6 +127,20 @@ body{
     <div>👤 Профиль</div>
     <div>⚙️</div>
 </div>
+
+<script>
+const wheel = document.getElementById("wheel");
+const button = document.querySelector(".spin-btn");
+
+let rotation = 0;
+
+button.onclick = () => {
+    rotation += 1800 + Math.random() * 1800;
+
+    wheel.style.transition = "transform 4s ease-out";
+    wheel.style.transform = `rotate(${rotation}deg)`;
+};
+</script>
 
 </body>
 </html>
