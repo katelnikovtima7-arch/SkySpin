@@ -36,7 +36,19 @@
     border-top:40px solid #198cff;
     z-index:10;
 }
+<script>
+const wheel = document.getElementById("wheel");
+const button = document.querySelector(".spin-btn");
 
+let rotation = 0;
+
+button.onclick = () => {
+    rotation += 1800 + Math.random()*1800;
+
+    wheel.style.transition = "transform 4s ease-out";
+    wheel.style.transform = `rotate(${rotation}deg)`;
+};
+</script>
 body{
     height:100vh;
     background:#111827;
