@@ -394,27 +394,41 @@ balance += win;
 
 const newBalance = balance;
 
-let current = oldBalance;
-
-const animation = setInterval(()=>{
-
-    current++;
+if(win === 0){
 
     balanceText.innerHTML =
-    `💎 ${current} TON`;
+    `💎 ${balance} TON`;
 
-    if(current >= newBalance){
+    localStorage.setItem(
+    "balance",
+    balance
+    );
 
-        clearInterval(animation);
+}else{
 
-        localStorage.setItem(
-        "balance",
-        newBalance
-        );
+    let current = oldBalance;
 
-    }
+    const animation = setInterval(()=>{
 
-},40);
+        current++;
+
+        balanceText.innerHTML =
+        `💎 ${current} TON`;
+
+        if(current >= newBalance){
+
+            clearInterval(animation);
+
+            localStorage.setItem(
+            "balance",
+            newBalance
+            );
+
+        }
+
+    },40);
+
+}
 
         prizeText.innerText =
         `${win} TON`;
