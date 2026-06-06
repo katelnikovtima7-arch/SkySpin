@@ -425,15 +425,29 @@ setTimeout(()=>{
     },5000);
 
 };
+    popupBtn.onclick = () => {
 
-popupBtn.onclick = () => {
+    popup.style.opacity = "0";
 
-    popup.style.display =
-    "none";
+    overlay.style.opacity = "0";
 
-    overlay.style.display =
-    "none";
+    popup.style.transform =
+    "translate(-50%,-50%) scale(.6)";
+
+    setTimeout(()=>{
+
+        popup.style.display =
+        "none";
+
+        overlay.style.display =
+        "none";
+
+    },350);
+
 };
+
+
+    
 
 document.addEventListener(
 "gesturestart",
