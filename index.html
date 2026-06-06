@@ -1,1 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>SkySpin</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    height:100vh;
+    background:#111827;
+    color:white;
+    display:flex;
+    flex-direction:column;
+}
+
+/* Верхняя панель */
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px;
+}
+
+.profile,
+.balance{
+    background:#1f2937;
+    padding:12px 18px;
+    border-radius:20px;
+}
+
+/* Центральный блок */
+.center{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.game-box{
+    width:280px;
+    height:280px;
+    border-radius:30px;
+    background:#1f2937;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:35px;
+    font-weight:bold;
+}
+
+/* Кнопка */
+.spin-btn{
+    margin:20px;
+    border:none;
+    border-radius:25px;
+    padding:20px;
+    font-size:26px;
+    font-weight:bold;
+    background:#198cff;
+    color:white;
+}
+
+/* Нижнее меню */
+.bottom{
+    display:flex;
+    justify-content:space-around;
+    padding:15px;
+    background:#1a1f2b;
+    border-top:1px solid #2d3748;
+}
+
+.bottom div{
+    color:#8e99a8;
+}
+
+.active{
+    color:#198cff !important;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top">
+    <div class="profile">👤 Профиль</div>
+    <div class="balance">💎 0 TON</div>
+</div>
+
+<div class="center">
+    <div class="game-box">
+        РУЛЕТКА
+    </div>
+</div>
+
+<button class="spin-btn">
+    КРУТИТЬ
+</button>
+
+<div class="bottom">
+    <div class="active">🎲 Игра</div>
+    <div>🏆 Топ</div>
+    <div>👤 Профиль</div>
+    <div>⚙️</div>
+</div>
+
+</body>
+</html>
