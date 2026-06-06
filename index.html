@@ -2,16 +2,218 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1.0,
+maximum-scale=1.0,
+user-scalable=no">
 
 <title>SkySpin</title>
 
 <style>
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
+
     font-family:Arial,sans-serif;
+
+    -webkit-user-select:none;
+    user-select:none;
+    -webkit-touch-callout:none;
+}
+
+body{
+    min-height:100vh;
+
+    background:#081225;
+
+    color:white;
+
+    display:flex;
+    flex-direction:column;
+
+    overflow:hidden;
+}
+
+.top{
+    display:flex;
+    justify-content:space-between;
+
+    padding:20px;
+}
+
+.profile,
+.balance{
+
+    background:#1b263b;
+
+    padding:14px 22px;
+
+    border-radius:22px;
+
+    font-size:22px;
+
+    box-shadow:
+    0 0 15px rgba(0,0,0,.25);
+}
+
+.center{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+}
+
+.wheel-area{
+
+    position:relative;
+
+    width:320px;
+    height:320px;
+}
+
+#wheel{
+
+    width:100%;
+    height:100%;
+
+    display:block;
+
+    transition:
+    transform 5s cubic-bezier(.17,.67,.2,1);
+}
+
+.pointer{
+
+    position:absolute;
+
+    top:-8px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:0;
+    height:0;
+
+    border-left:15px solid transparent;
+    border-right:15px solid transparent;
+
+    border-top:30px solid #2492ff;
+
+    z-index:10;
+}
+
+.spin-btn{
+
+    margin-top:35px;
+
+    border:none;
+
+    border-radius:30px;
+
+    width:280px;
+
+    height:95px;
+
+    font-size:34px;
+
+    font-weight:bold;
+
+    background:#2492ff;
+
+    color:white;
+
+    transition:.2s;
+}
+
+.spin-btn:active{
+
+    transform:scale(.97);
+}
+
+.bottom{
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+    padding:20px;
+
+    background:#131d30;
+
+    border-top:
+    1px solid #25334d;
+}
+
+.bottom div{
+
+    font-size:24px;
+
+    color:#8e99a8;
+}
+
+.active{
+
+    color:#2492ff !important;
+}
+
+/* Окно выигрыша */
+
+.popup{
+
+    position:fixed;
+
+    left:50%;
+    top:50%;
+
+    transform:
+    translate(-50%,-50%);
+
+    background:#1b263b;
+
+    width:280px;
+
+    padding:25px;
+
+    border-radius:25px;
+
+    text-align:center;
+
+    z-index:9999;
+
+    display:none;
+
+    box-shadow:
+    0 0 35px rgba(0,0,0,.45);
+}
+
+.popup-title{
+
+    font-size:32px;
+
+    font-weight:bold;
+
+    margin-bottom:15px;
+}
+
+.popup-prize{
+
+    font-size:42px;
+
+    color:#2492ff;
+
+    font-weight:bold;
 }
 
 body{
