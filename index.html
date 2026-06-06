@@ -215,3 +215,197 @@ body{
 
     font-weight:bold;
 }
+    .popup-btn{
+
+    margin-top:20px;
+
+    border:none;
+
+    background:#2492ff;
+
+    color:white;
+
+    padding:12px 25px;
+
+    border-radius:15px;
+
+    font-size:20px;
+}
+
+.overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.55);
+
+    display:none;
+
+    z-index:9998;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="top">
+    <div class="profile">👤 Профиль</div>
+    <div class="balance" id="balance">
+        💎 0 TON
+    </div>
+</div>
+
+<div class="center">
+
+    <div class="wheel-area">
+        <div class="pointer"></div>
+        <img src="IMG_0854.png" id="wheel">
+    </div>
+
+    <button class="spin-btn">
+        КРУТИТЬ
+    </button>
+
+</div>
+
+<div class="bottom">
+    <div class="active">🎲 Игра</div>
+    <div>🏆 Топ</div>
+    <div>👤 Профиль</div>
+    <div>⚙️</div>
+</div>
+
+<div class="overlay"></div>
+
+<div class="popup">
+
+    <div class="popup-title">
+        Выигрыш
+    </div>
+
+    <div class="popup-prize" id="prizeText">
+        0 TON
+    </div>
+
+    <button class="popup-btn">
+        ОК
+    </button>
+
+</div>
+
+<script>
+
+const wheel =
+document.getElementById("wheel");
+
+const button =
+document.querySelector(".spin-btn");
+
+const popup =
+document.querySelector(".popup");
+
+const overlay =
+document.querySelector(".overlay");
+
+const popupBtn =
+document.querySelector(".popup-btn");
+
+const prizeText =
+document.getElementById("prizeText");
+
+const balanceText =
+document.getElementById("balance");
+
+let balance =
+Number(localStorage.getItem("balance")) || 0;
+
+balanceText.innerHTML =
+`💎 ${balance} TON`;
+
+let spinning = false;
+
+let rotation = 0;
+
+/* сектора */
+
+const prizes =
+[30,0,2,1,10,0,5,1];
+
+button.onclick = () => {
+
+    if(spinning) return;
+
+    spinning = true;
+
+    button.disabled = true;
+
+    button.innerText =
+    "КРУТИТСЯ...";
+
+    const sector =
+    Math.floor(Math.random()*8);
+
+    const angle =
+    sector * 45;
+
+    rotation +=
+    360*6 - angle;
+
+    wheel.style.transform =
+    `rotate(${rotation}deg)`;
+
+    setTimeout(()=>{
+
+        const win =
+        prizes[sector];
+
+        balance += win;
+
+        localStorage.setItem(
+        "balance",
+        balance
+        );
+
+        balanceText.innerHTML =
+        `💎 ${balance} TON`;
+
+        prizeText.innerText =
+        `${win} TON`;
+
+        popup.style.display =
+        "block";
+
+        overlay.style.display =
+        "block";
+
+        spinning = false;
+
+        button.disabled = false;
+
+        button.innerText =
+        "КРУТИТЬ";
+
+    },5000);
+
+};
+
+popupBtn.onclick = () => {
+
+    popup.style.display =
+    "none";
+
+    overlay.style.display =
+    "none";
+};
+
+document.addEventListener(
+"gesturestart",
+e=>e.preventDefault()
+);
+
+</script>
+
+</body>
+</html>
