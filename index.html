@@ -388,15 +388,33 @@ spinSound.currentTime = 0;
 const win =
 prizes[currentSector];
 
-        balance += win;
+        const oldBalance = balance;
+
+balance += win;
+
+const newBalance = balance;
+
+let current = oldBalance;
+
+const animation = setInterval(()=>{
+
+    current++;
+
+    balanceText.innerHTML =
+    `💎 ${current} TON`;
+
+    if(current >= newBalance){
+
+        clearInterval(animation);
 
         localStorage.setItem(
         "balance",
-        balance
+        newBalance
         );
 
-        balanceText.innerHTML =
-        `💎 ${balance} TON`;
+    }
+
+},40);
 
         prizeText.innerText =
         `${win} TON`;
