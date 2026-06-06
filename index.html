@@ -357,8 +357,16 @@ button.onclick = () => {
 
     setTimeout(()=>{
 
-        const win =
-        prizes[sector];
+        const normalized =
+((rotation % 360) + 360) % 360;
+
+const currentSector =
+Math.floor(
+(((360 - normalized) % 360) + 22.5) / 45
+) % 8;
+
+const win =
+prizes[currentSector];
 
         balance += win;
 
