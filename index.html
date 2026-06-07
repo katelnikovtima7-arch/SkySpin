@@ -411,9 +411,10 @@ function updateHistory(){
     }
 
     historyList.innerHTML =
-    history
-    .map(x => `${x} TON`)
-.join(" ");
+        history
+.map(x => `<span class="history-item">${x} TON</span>`)
+.join("");
+    
 }
 
 updateHistory();
