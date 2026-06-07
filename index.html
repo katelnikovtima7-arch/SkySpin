@@ -453,6 +453,8 @@ if(win === 0){
 
         prizeText.innerText =
         `${win} TON`;
+        winSound.currentTime = 0;
+winSound.play();
         if(navigator.vibrate){
     navigator.vibrate([200,100,200]);
 }
