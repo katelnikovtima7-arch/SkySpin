@@ -459,7 +459,9 @@ Math.floor(
 spinSound.pause();
 spinSound.currentTime = 0;
 const win =
-    history.unshift(win);
+prizes[currentSector];
+
+history.unshift(win);
 
 if(history.length > 5){
     history.pop();
@@ -471,7 +473,6 @@ JSON.stringify(history)
 );
 
 updateHistory();
-prizes[currentSector];
 
         const oldBalance = balance;
 
