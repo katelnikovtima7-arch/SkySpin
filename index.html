@@ -450,6 +450,9 @@ if(win === 0){
 
         prizeText.innerText =
         `${win} TON`;
+        if(navigator.vibrate){
+    navigator.vibrate([200,100,200]);
+}
 
  overlay.style.display = "block";
 popup.style.display = "block";
