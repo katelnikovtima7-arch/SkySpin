@@ -395,6 +395,28 @@ balanceText.innerHTML =
 let spinning = false;
 
 let rotation = 0;
+    let history =
+JSON.parse(
+localStorage.getItem("history")
+) || [];
+
+function updateHistory(){
+
+    if(history.length === 0){
+
+        historyList.innerHTML =
+        "Пока нет выигрышей";
+
+        return;
+    }
+
+    historyList.innerHTML =
+    history
+    .map(x => `${x} TON`)
+    .join("<br>");
+}
+
+updateHistory();
 
 /* сектора */
 
