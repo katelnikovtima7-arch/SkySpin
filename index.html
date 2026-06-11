@@ -12,6 +12,13 @@
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
+        /* запрет копирования текста */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
         body {
             background: #0B1120;
             font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif;
@@ -67,7 +74,7 @@
             font-size: 0.6rem;
             color: #5A6E8A;
         }
-        /* центральная часть (монетка) */
+        /* центральная часть */
         .game-stats {
             display: flex;
             justify-content: center;
@@ -87,19 +94,25 @@
             font-size: 0.65rem;
             color: #5A6E8A;
         }
-        .multiplier-block {
+        /* главная монета вместо цифр */
+        .main-coin {
             text-align: center;
             padding: 8px 0;
             flex-shrink: 0;
         }
-        .multiplier-value {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #FFD966;
+        .main-coin img {
+            width: 100px;
+            height: 100px;
+            transition: transform 0.2s ease;
+            filter: drop-shadow(0 0 8px #2f9eff40);
         }
-        .multiplier-label {
-            font-size: 0.65rem;
-            color: #5A6E8A;
+        .coin-animation {
+            animation: coinFlipAnim 0.3s ease-in-out;
+        }
+        @keyframes coinFlipAnim {
+            0% { transform: scale(0.8) rotateY(0deg); opacity: 0.5; }
+            50% { transform: scale(1.1) rotateY(180deg); }
+            100% { transform: scale(1) rotateY(360deg); opacity: 1; }
         }
         .coin-area {
             display: flex;
@@ -110,17 +123,24 @@
         }
         .coin-option {
             flex: 1;
-            max-width: 140px;
+            max-width: 160px;
             background: #1A2438;
             border: 1px solid #2A3A50;
             border-radius: 60px;
-            padding: 14px 0;
-            text-align: center;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #A0B4D0;
             cursor: pointer;
             transition: 0.1s;
+        }
+        .coin-option img {
+            width: 28px;
+            height: 28px;
         }
         .coin-option.selected {
             background: #2F9EFF;
@@ -288,14 +308,18 @@
         </div>
     </div>
 
-    <div class="multiplier-block">
-        <div class="multiplier-value" id="currentMultiplierDisplay">0.00</div>
-        <div class="multiplier-label">⭐ STARS</div>
+    <!-- ГЛАВНАЯ МОНЕТА -->
+    <div class="main-coin">
+        <img src="IMG_0944-photos.png" alt="монета" id="mainCoinImg">
     </div>
 
     <div class="coin-area">
-        <div class="coin-option" data-side="ОРЕЛ">ОРЁЛ</div>
-        <div class="coin-option" data-side="РЕШКА">РЕШКА</div>
+        <div class="coin-option" data-side="ОРЕЛ">
+            <img src="IMG_0944-photos.png" alt="орёл"> ОРЁЛ
+        </div>
+        <div class="coin-option" data-side="РЕШКА">
+            <img src="IMG_0945-photos.png" alt="решка"> РЕШКА
+        </div>
     </div>
 
     <div class="bet-panel">
@@ -348,9 +372,9 @@
     const historyList = document.getElementById('historyList');
     const playBtn = document.getElementById('playBtn');
     const actionButtons = document.getElementById('actionButtons');
-    const currentMultiplierDisplay = document.getElementById('currentMultiplierDisplay');
     const takeBtn = document.getElementById('takeBtn');
     const riskBtn = document.getElementById('riskBtn');
+    const mainCoinImg = document.getElementById('mainCoinImg');
 
     function updateBalanceUI() {
         balanceEl.innerText = Math.floor(balance);
@@ -386,13 +410,27 @@
         saveGame();
     }
 
+    // анимация монеты
+    function animateCoin(result) {
+        mainCoinImg.classList.remove('coin-animation');
+        void mainCoinImg.offsetHeight;
+        mainCoinImg.classList.add('coin-animation');
+        if (result === 'ОРЕЛ') {
+            mainCoinImg.src = 'IMG_0944-photos.png';
+        } else {
+            mainCoinImg.src = 'IMG_0945-photos.png';
+        }
+        setTimeout(() => {
+            mainCoinImg.classList.remove('coin-animation');
+        }, 300);
+    }
+
     function resetRiskMode() {
         riskActive = false;
         actionButtons.style.display = 'none';
         playBtn.style.display = 'block';
         currentRiskMultiplier = 1.0;
         currentRiskStake = 0;
-        currentMultiplierDisplay.innerText = '0.00';
         saveGame();
     }
 
@@ -413,10 +451,10 @@
         if (!riskActive) return;
         const result = Math.random() < 0.5 ? "ОРЕЛ" : "РЕШКА";
         const isWin = (result === userChoice);
+        animateCoin(result);
         if (isWin) {
             currentRiskMultiplier *= BASE_MULTIPLIER;
             currentRiskStake = Math.floor(bet * currentRiskMultiplier);
-            currentMultiplierDisplay.innerText = currentRiskStake.toFixed(2);
             addHistory(`🪙 РИСК: ${result} ✅ ВЫИГРЫШ! СУММА ${currentRiskStake} ⭐`, 'win');
             winStreak++;
         } else {
@@ -436,12 +474,12 @@
         }
         const result = Math.random() < 0.5 ? "ОРЕЛ" : "РЕШКА";
         const isWin = (result === userChoice);
+        animateCoin(result);
         if (isWin) {
             const winAmountRaw = Math.floor(bet * BASE_MULTIPLIER);
             riskActive = true;
             currentRiskMultiplier = BASE_MULTIPLIER;
             currentRiskStake = winAmountRaw;
-            currentMultiplierDisplay.innerText = winAmountRaw.toFixed(2);
             actionButtons.style.display = 'flex';
             playBtn.style.display = 'none';
             addHistory(`🪙 ${result} ✅ ВЫИГРЫШ! МОЖЕШЬ ЗАБРАТЬ ${winAmountRaw} ⭐`, 'win');
@@ -473,34 +511,22 @@
 
     // ------------------- ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК -------------------
     const navItems = document.querySelectorAll('.nav-item');
-    const gameArea = document.querySelector('.app');
     let currentTab = 'coin';
 
-    function renderCoinTab() {
-        // уже всё отрисовано в HTML, просто показываем
-        document.querySelector('.game-stats').style.display = 'flex';
-        document.querySelector('.multiplier-block').style.display = 'block';
-        document.querySelector('.coin-area').style.display = 'flex';
-        document.querySelector('.bet-panel').style.display = 'flex';
-        document.querySelector('.play-btn').style.display = 'block';
-        document.querySelector('.history-section').style.display = 'block';
-    }
-
     function renderLeadersTab() {
-        // скрываем игровые элементы
         document.querySelector('.game-stats').style.display = 'none';
-        document.querySelector('.multiplier-block').style.display = 'none';
+        document.querySelector('.main-coin').style.display = 'none';
         document.querySelector('.coin-area').style.display = 'none';
         document.querySelector('.bet-panel').style.display = 'none';
         document.querySelector('.play-btn').style.display = 'none';
         document.querySelector('.action-buttons').style.display = 'none';
         document.querySelector('.history-section').style.display = 'none';
-        // показываем лидеров
+        
         let leadersDiv = document.getElementById('leadersContent');
         if (!leadersDiv) {
             leadersDiv = document.createElement('div');
             leadersDiv.id = 'leadersContent';
-            leadersDiv.style.cssText = 'flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; gap:20px;';
+            leadersDiv.style.cssText = 'flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; gap:20px; overflow-y:auto; padding:20px;';
             leadersDiv.innerHTML = `
                 <div style="font-size:3rem;">🏆</div>
                 <div style="font-size:1.2rem;">Топ игроков</div>
@@ -516,14 +542,13 @@
         } else {
             leadersDiv.style.display = 'flex';
         }
-        // скрываем профиль если был открыт
         const profileDiv = document.getElementById('profileContent');
         if (profileDiv) profileDiv.style.display = 'none';
     }
 
     function renderProfileTab() {
         document.querySelector('.game-stats').style.display = 'none';
-        document.querySelector('.multiplier-block').style.display = 'none';
+        document.querySelector('.main-coin').style.display = 'none';
         document.querySelector('.coin-area').style.display = 'none';
         document.querySelector('.bet-panel').style.display = 'none';
         document.querySelector('.play-btn').style.display = 'none';
@@ -561,6 +586,21 @@
         if (leadersDiv) leadersDiv.style.display = 'none';
     }
 
+    function renderCoinTab() {
+        document.querySelector('.game-stats').style.display = 'flex';
+        document.querySelector('.main-coin').style.display = 'block';
+        document.querySelector('.coin-area').style.display = 'flex';
+        document.querySelector('.bet-panel').style.display = 'flex';
+        document.querySelector('.history-section').style.display = 'block';
+        if (!riskActive) {
+            document.querySelector('.play-btn').style.display = 'block';
+        }
+        const leadersDiv = document.getElementById('leadersContent');
+        if (leadersDiv) leadersDiv.style.display = 'none';
+        const profileDiv = document.getElementById('profileContent');
+        if (profileDiv) profileDiv.style.display = 'none';
+    }
+
     function switchTab(tab) {
         if (riskActive) {
             addHistory(`⚠️ Сначала закончи игру (забери или прокрути)`, 'loss');
@@ -572,25 +612,9 @@
             else item.classList.remove('active');
         });
         
-        // скрываем все дополнительные блоки
-        const leadersDiv = document.getElementById('leadersContent');
-        if (leadersDiv) leadersDiv.style.display = 'none';
-        const profileDiv = document.getElementById('profileContent');
-        if (profileDiv) profileDiv.style.display = 'none';
-        
-        if (tab === 'coin') {
-            document.querySelector('.game-stats').style.display = 'flex';
-            document.querySelector('.multiplier-block').style.display = 'block';
-            document.querySelector('.coin-area').style.display = 'flex';
-            document.querySelector('.bet-panel').style.display = 'flex';
-            document.querySelector('.play-btn').style.display = 'block';
-            document.querySelector('.history-section').style.display = 'block';
-            if (!riskActive) document.querySelector('.play-btn').style.display = 'block';
-        } else if (tab === 'leaders') {
-            renderLeadersTab();
-        } else if (tab === 'profile') {
-            renderProfileTab();
-        }
+        if (tab === 'coin') renderCoinTab();
+        else if (tab === 'leaders') renderLeadersTab();
+        else if (tab === 'profile') renderProfileTab();
     }
 
     navItems.forEach(item => {
@@ -632,15 +656,15 @@
                 if (riskActive) {
                     actionButtons.style.display = 'flex';
                     playBtn.style.display = 'none';
-                    currentMultiplierDisplay.innerText = currentRiskStake.toFixed(2);
                 } else {
                     actionButtons.style.display = 'none';
                     playBtn.style.display = 'block';
-                    currentMultiplierDisplay.innerText = '0.00';
                 }
             } catch(e) {}
         }
         setChoice(userChoice);
+        // восстанавливаем картинку монеты по умолчанию
+        mainCoinImg.src = 'IMG_0944-photos.png';
     }
 
     // ------------------- СОБЫТИЯ -------------------
