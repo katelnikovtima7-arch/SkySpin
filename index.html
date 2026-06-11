@@ -17,9 +17,8 @@
             font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif;
             height: 100vh;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: fixed;
+            width: 100%;
         }
         .app {
             width: 100%;
@@ -30,6 +29,7 @@
             flex-direction: column;
             position: relative;
             overflow: hidden;
+            margin: 0 auto;
         }
         .top-bar {
             display: flex;
@@ -37,6 +37,7 @@
             align-items: center;
             padding: 20px 20px 12px 20px;
             background: #0A121F;
+            flex-shrink: 0;
         }
         .close-btn {
             color: #7F8FA4;
@@ -63,35 +64,36 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 24px;
-            padding: 20px;
+            gap: 20px;
+            padding: 16px;
             overflow-y: auto;
+            min-height: 0;
         }
         .coin-icon {
-            font-size: 5.5rem;
+            font-size: 5rem;
             filter: drop-shadow(0 0 8px #2f9eff40);
         }
         .multiplier-badge {
             background: #111C2C;
             border-radius: 60px;
-            padding: 8px 24px;
+            padding: 6px 20px;
             border: 1px solid #2F4A6E;
         }
         .multiplier-value {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: #66D4FF;
         }
         .multiplier-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #6F8FAC;
             text-align: center;
         }
         .stats-row {
             display: flex;
-            gap: 28px;
+            gap: 20px;
             background: #0E1826;
-            padding: 12px 28px;
+            padding: 8px 24px;
             border-radius: 60px;
         }
         .stat {
@@ -108,7 +110,7 @@
         }
         .choice-buttons {
             display: flex;
-            gap: 20px;
+            gap: 16px;
             width: 100%;
             padding: 0 8px;
         }
@@ -117,10 +119,10 @@
             background: #111C2C;
             border: 1px solid #2F4A6E;
             border-radius: 60px;
-            padding: 14px 0;
+            padding: 12px 0;
             text-align: center;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #B8D0E8;
             cursor: pointer;
             transition: 0.1s;
@@ -134,7 +136,7 @@
         .bet-section {
             background: #0E1826;
             border-radius: 60px;
-            padding: 8px 20px;
+            padding: 6px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -142,22 +144,22 @@
         }
         .bet-label {
             color: #7F8FA4;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
         .bet-control {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
         }
         .bet-input {
             background: #111C2C;
             border: none;
             color: white;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
-            width: 80px;
+            width: 70px;
             text-align: center;
-            padding: 8px 0;
+            padding: 6px 0;
             border-radius: 40px;
         }
         .bet-input:focus {
@@ -167,10 +169,10 @@
         .bet-btn {
             background: #1E4973;
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: white;
             cursor: pointer;
@@ -183,12 +185,12 @@
             width: 100%;
             border: none;
             border-radius: 60px;
-            padding: 16px;
-            font-size: 1rem;
+            padding: 14px;
+            font-size: 0.95rem;
             font-weight: bold;
             color: white;
             cursor: pointer;
-            margin-top: 12px;
+            margin-top: 8px;
             transition: 0.07s;
         }
         .play-btn:active {
@@ -197,8 +199,8 @@
         .risk-panel {
             background: #0E1826;
             border-radius: 28px;
-            padding: 16px;
-            margin-top: 8px;
+            padding: 12px;
+            margin-top: 4px;
             text-align: center;
             width: 100%;
         }
@@ -206,21 +208,21 @@
             display: none;
         }
         .current-multiplier {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: bold;
             color: #66D4FF;
         }
         .action-buttons {
             display: flex;
             gap: 12px;
-            margin-top: 12px;
+            margin-top: 10px;
         }
         .take-btn {
             flex: 1;
             background: #1E6B3E;
             border: none;
             border-radius: 60px;
-            padding: 12px;
+            padding: 10px;
             font-weight: bold;
             color: white;
             cursor: pointer;
@@ -230,7 +232,7 @@
             background: #2F9EFF;
             border: none;
             border-radius: 60px;
-            padding: 12px;
+            padding: 10px;
             font-weight: bold;
             color: white;
             cursor: pointer;
@@ -241,7 +243,8 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 12px 16px 20px;
+            padding: 10px 16px 18px;
+            flex-shrink: 0;
         }
         .nav-item {
             display: flex;
@@ -256,19 +259,20 @@
             opacity: 1;
         }
         .nav-icon {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
         }
         .nav-label {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: #B0C4DE;
         }
         .history {
             background: #0E1826;
             border-radius: 24px;
-            margin: 8px 16px 0;
-            padding: 10px;
-            max-height: 100px;
+            margin: 6px 16px 0;
+            padding: 8px;
+            max-height: 85px;
             overflow-y: auto;
+            flex-shrink: 0;
         }
         .history-list {
             display: flex;
@@ -277,9 +281,9 @@
         }
         .history-item {
             background: #111C2C;
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 30px;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: #B0C4DE;
         }
         .history-item.win { background: #1E6B3E; color: white; }
@@ -298,37 +302,7 @@
     </div>
 
     <div class="game-area" id="gameArea">
-        <!-- МОНЕТКА (основная игра) -->
-        <div class="coin-icon">🪙</div>
-        <div class="multiplier-badge">
-            <div class="multiplier-value" id="multiplierValue">1.95x</div>
-            <div class="multiplier-label">множитель</div>
-        </div>
-        <div class="stats-row">
-            <div class="stat"><div class="stat-value" id="roundNum">1</div><div class="stat-label">РАУНД</div></div>
-            <div class="stat"><div class="stat-value" id="winCountStat">0</div><div class="stat-label">ВИНСТРИК</div></div>
-        </div>
-        <div class="choice-buttons">
-            <div class="choice" data-side="ОРЕЛ">🪙 ОРЁЛ</div>
-            <div class="choice" data-side="РЕШКА">🪙 РЕШКА</div>
-        </div>
-        <div class="bet-section">
-            <span class="bet-label">СТАВКА</span>
-            <div class="bet-control">
-                <button class="bet-btn" id="decBet">−</button>
-                <input type="number" id="betAmount" class="bet-input" value="50" step="10">
-                <button class="bet-btn" id="incBet">+</button>
-            </div>
-            <button class="bet-btn" id="maxBet">MAX</button>
-        </div>
-        <button class="play-btn" id="playBtn">СДЕЛАТЬ СТАВКУ</button>
-        <div class="risk-panel hidden" id="riskPanel">
-            <div class="current-multiplier" id="currentMultiplier">1.95x</div>
-            <div class="action-buttons">
-                <button class="take-btn" id="takeBtn">💰 ЗАБРАТЬ</button>
-                <button class="risk-btn" id="riskBtn">🔄 КРУТИТЬ</button>
-            </div>
-        </div>
+        <!-- сюда динамически будет вставляться контент -->
     </div>
 
     <div class="history">
@@ -371,26 +345,13 @@
     let currentRiskStake = 0;
 
     // DOM элементы
+    const gameArea = document.getElementById('gameArea');
     const balanceEl = document.getElementById('balanceValue');
-    const roundEl = document.getElementById('roundNum');
-    const winCountStat = document.getElementById('winCountStat');
-    const betInput = document.getElementById('betAmount');
     const historyList = document.getElementById('historyList');
-    const playBtn = document.getElementById('playBtn');
-    const riskPanel = document.getElementById('riskPanel');
-    const currentMultiplierSpan = document.getElementById('currentMultiplier');
-    const takeBtn = document.getElementById('takeBtn');
-    const riskBtn = document.getElementById('riskBtn');
-    const multiplierValue = document.getElementById('multiplierValue');
 
-    // Функции обновления UI
     function updateBalanceUI() {
         balanceEl.innerText = Math.floor(balance);
         saveGame();
-    }
-
-    function updateWinStreakUI() {
-        winCountStat.innerText = winStreak;
     }
 
     function addHistory(text, type) {
@@ -401,7 +362,7 @@
         else if (type === 'take') item.classList.add('take');
         item.innerText = text;
         historyList.prepend(item);
-        while (historyList.children.length > 12) historyList.removeChild(historyList.lastChild);
+        while (historyList.children.length > 10) historyList.removeChild(historyList.lastChild);
         saveGame();
     }
 
@@ -409,26 +370,18 @@
         if (bet < 1) bet = 1;
         if (bet > MAX_BET) bet = MAX_BET;
         if (bet > balance) bet = balance;
-        betInput.value = bet;
         saveGame();
     }
 
     function setChoice(choice) {
         userChoice = choice;
-        document.querySelectorAll('.choice').forEach(el => {
-            if (el.dataset.side === choice) el.classList.add('selected');
-            else el.classList.remove('selected');
-        });
         saveGame();
     }
 
     function resetRiskMode() {
         riskActive = false;
-        riskPanel.classList.add('hidden');
         currentRiskMultiplier = 1.0;
         currentRiskStake = 0;
-        playBtn.disabled = false;
-        playBtn.style.opacity = '1';
         saveGame();
     }
 
@@ -438,12 +391,10 @@
         balance += winAmount;
         winStreak = 0;
         updateBalanceUI();
-        updateWinStreakUI();
         addHistory(`✅ ЗАБРАЛ(А) ${winAmount} ⭐ (x${currentRiskMultiplier.toFixed(2)})`, 'take');
         resetRiskMode();
         currentRound++;
-        roundEl.innerText = currentRound;
-        multiplierValue.innerText = BASE_MULTIPLIER.toFixed(2) + 'x';
+        renderCoinTab();
         saveGame();
     }
 
@@ -454,18 +405,14 @@
         if (isWin) {
             currentRiskMultiplier *= BASE_MULTIPLIER;
             currentRiskStake = Math.floor(bet * currentRiskMultiplier);
-            currentMultiplierSpan.innerText = currentRiskMultiplier.toFixed(2) + 'x';
             addHistory(`🪙 РИСК: ${result} ✅ ВЫИГРЫШ! МНОЖИТЕЛЬ ${currentRiskMultiplier.toFixed(2)}x`, 'win');
             winStreak++;
-            updateWinStreakUI();
         } else {
             addHistory(`🪙 РИСК: ${result} ❌ ПРОИГРЫШ! ПОТЕРЯНО ${currentRiskStake} ⭐`, 'loss');
             winStreak = 0;
-            updateWinStreakUI();
             resetRiskMode();
             currentRound++;
-            roundEl.innerText = currentRound;
-            multiplierValue.innerText = BASE_MULTIPLIER.toFixed(2) + 'x';
+            renderCoinTab();
         }
         saveGame();
     }
@@ -482,25 +429,18 @@
             riskActive = true;
             currentRiskMultiplier = BASE_MULTIPLIER;
             currentRiskStake = winAmountRaw;
-            currentMultiplierSpan.innerText = currentRiskMultiplier.toFixed(2) + 'x';
-            riskPanel.classList.remove('hidden');
-            playBtn.disabled = true;
-            playBtn.style.opacity = '0.5';
             addHistory(`🪙 ${result} ✅ ВЫИГРЫШ! МОЖЕШЬ ЗАБРАТЬ ${winAmountRaw} ⭐`, 'win');
             winStreak++;
-            updateWinStreakUI();
-            multiplierValue.innerText = BASE_MULTIPLIER.toFixed(2) + 'x';
+            renderCoinTab();
         } else {
             balance -= bet;
             updateBalanceUI();
             addHistory(`🪙 ${result} ❌ ПРОИГРЫШ -${bet} ⭐`, 'loss');
             winStreak = 0;
-            updateWinStreakUI();
             currentRound++;
-            roundEl.innerText = currentRound;
+            renderCoinTab();
             if (balance <= 0) {
                 addHistory(`💔 Банкротство`, 'loss');
-                playBtn.disabled = true;
             }
         }
         updateBetUI();
@@ -516,16 +456,12 @@
         firstFlip();
     }
 
-    // ------------------- ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК -------------------
-    const gameArea = document.getElementById('gameArea');
-    const navItems = document.querySelectorAll('.nav-item');
-    let currentTab = 'coin';
-
+    // ------------------- ОТРИСОВКА ВКЛАДОК -------------------
     function renderCoinTab() {
         gameArea.innerHTML = `
             <div class="coin-icon">🪙</div>
             <div class="multiplier-badge">
-                <div class="multiplier-value" id="multiplierValue">${multiplierValue.innerText}</div>
+                <div class="multiplier-value" id="multiplierValue">${BASE_MULTIPLIER.toFixed(2)}x</div>
                 <div class="multiplier-label">множитель</div>
             </div>
             <div class="stats-row">
@@ -554,9 +490,12 @@
                 </div>
             </div>
         `;
-        // перепривязываем события
+        // события
         document.querySelectorAll('.choice').forEach(btn => {
-            btn.addEventListener('click', () => setChoice(btn.dataset.side));
+            btn.addEventListener('click', () => {
+                setChoice(btn.dataset.side);
+                renderCoinTab();
+            });
         });
         document.getElementById('decBet')?.addEventListener('click', () => {
             bet = Math.max(1, bet - 10);
@@ -583,17 +522,14 @@
             renderCoinTab();
         });
         document.getElementById('playBtn')?.addEventListener('click', makeBet);
-        document.getElementById('takeBtn')?.addEventListener('click', takeProfit);
-        document.getElementById('riskBtn')?.addEventListener('click', riskFlip);
-        
-        // обновляем глобальные ссылки
-        window.multiplierValue = document.getElementById('multiplierValue');
-        window.roundEl = document.getElementById('roundNum');
-        window.winCountStat = document.getElementById('winCountStat');
-        window.betInputGlobal = document.getElementById('betAmount');
-        window.playBtnGlobal = document.getElementById('playBtn');
-        window.riskPanelGlobal = document.getElementById('riskPanel');
-        window.currentMultiplierSpan = document.getElementById('currentMultiplier');
+        document.getElementById('takeBtn')?.addEventListener('click', () => {
+            takeProfit();
+            renderCoinTab();
+        });
+        document.getElementById('riskBtn')?.addEventListener('click', () => {
+            riskFlip();
+            renderCoinTab();
+        });
     }
 
     function renderCasesTab() {
@@ -627,6 +563,10 @@
         `;
     }
 
+    // ------------------- ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК -------------------
+    const navItems = document.querySelectorAll('.nav-item');
+    let currentTab = 'coin';
+
     function switchTab(tab) {
         if (riskActive) {
             addHistory(`⚠️ Сначала закончи игру (забери или прокрути)`, 'loss');
@@ -643,6 +583,10 @@
         else if (tab === 'profile') renderProfileTab();
     }
 
+    navItems.forEach(item => {
+        item.addEventListener('click', () => switchTab(item.dataset.tab));
+    });
+
     // ------------------- СОХРАНЕНИЕ -------------------
     function saveGame() {
         const save = {
@@ -653,8 +597,7 @@
             userChoice: userChoice,
             riskActive: riskActive,
             currentRiskMultiplier: currentRiskMultiplier,
-            currentRiskStake: currentRiskStake,
-            currentTab: currentTab
+            currentRiskStake: currentRiskStake
         };
         localStorage.setItem('StarsFlipSave', JSON.stringify(save));
     }
@@ -672,37 +615,15 @@
                 riskActive = data.riskActive ?? false;
                 currentRiskMultiplier = data.currentRiskMultiplier ?? 1.0;
                 currentRiskStake = data.currentRiskStake ?? 0;
-                const savedTab = data.currentTab ?? 'coin';
                 updateBalanceUI();
                 updateBetUI();
-                updateWinStreakUI();
-                roundEl.innerText = currentRound;
-                multiplierValue.innerText = BASE_MULTIPLIER.toFixed(2) + 'x';
-                setChoice(userChoice);
-                if (!riskActive) {
-                    riskPanel.classList.add('hidden');
-                    playBtn.disabled = false;
-                    playBtn.style.opacity = '1';
-                } else {
-                    riskPanel.classList.remove('hidden');
-                    playBtn.disabled = true;
-                    playBtn.style.opacity = '0.5';
-                    currentMultiplierSpan.innerText = currentRiskMultiplier.toFixed(2) + 'x';
-                }
-                switchTab(savedTab);
             } catch(e) {}
-        } else {
-            switchTab('coin');
         }
+        renderCoinTab();
     }
 
-    // ------------------- СОБЫТИЯ -------------------
-    navItems.forEach(item => {
-        item.addEventListener('click', () => switchTab(item.dataset.tab));
-    });
-
     document.querySelector('.close-btn')?.addEventListener('click', () => {
-        alert('⭐ StarsFlip — демо-версия');
+        alert('⭐ StarsFlip — играй честно, забирай выигрыш');
     });
 
     loadGame();
