@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Casino Demo — 🥱 монетка и рулетка</title>
+    <title>StarsFlip — риск-монетка</title>
     <style>
         * {
             margin: 0;
@@ -12,145 +12,112 @@
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
-
         body {
+            background: linear-gradient(145deg, #0a0c12 0%, #05070a 100%);
             min-height: 100vh;
-            background: linear-gradient(145deg, #0a2f1f 0%, #051a0e 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
-            padding: 20px;
+            padding: 16px;
         }
-
         .game-container {
-            max-width: 550px;
+            max-width: 520px;
             width: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(10, 14, 23, 0.9);
             backdrop-filter: blur(14px);
-            border-radius: 56px;
+            border-radius: 48px;
             padding: 24px 20px 32px;
-            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 215, 0, 0.5);
-            transition: all 0.2s;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 215, 0, 0.35);
         }
-
-        h1 {
-            text-align: center;
-            color: #FFD966;
-            font-size: 1.7rem;
-            letter-spacing: 2px;
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
             margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
-
-        .balance-area {
-            background: #1e1a10;
-            border-radius: 100px;
-            padding: 12px 20px;
-            text-align: center;
-            margin-bottom: 24px;
-            border: 1px solid #f3b33d50;
-        }
-
-        .balance-label {
-            color: #bbb;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-        }
-
-        .balance-value {
-            font-size: 2.4rem;
+        .logo {
+            font-size: 1.7rem;
             font-weight: bold;
-            color: #FFD966;
-            text-shadow: 0 2px 0 #7a5c00;
+            background: linear-gradient(135deg, #ffd966, #ffaa33);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
-
-        .game-selector {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .game-btn {
-            flex: 1;
-            background: #2a241a;
-            border: 1px solid #ffb34760;
-            border-radius: 100px;
-            padding: 12px 0;
-            font-size: 1rem;
-            font-weight: bold;
-            color: #ffcc77;
-            text-align: center;
+        .how-btn {
+            background: rgba(255,215,0,0.12);
+            border: 1px solid rgba(255,215,0,0.4);
+            border-radius: 40px;
+            padding: 6px 16px;
+            font-size: 0.7rem;
+            color: #ffdd88;
             cursor: pointer;
             transition: 0.1s;
         }
-
-        .game-btn.active {
-            background: #f0a500;
-            color: #1f2a0e;
-            box-shadow: 0 0 8px #ffb347;
-            border-color: #ffd966;
+        .how-btn:active { transform: scale(0.96); }
+        .balance-card {
+            background: #0f121eb3;
+            border-radius: 40px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255,215,0,0.3);
         }
-
-        .game-btn:active {
-            transform: scale(0.96);
+        .balance-label { color: #aaa; font-size: 0.7rem; letter-spacing: 1px; }
+        .balance-value { font-size: 2.2rem; font-weight: bold; color: #FFD966; text-shadow: 0 2px 0 #7a5c00; }
+        .balance-currency { font-size: 0.9rem; color: #ffcc77; }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            background: #080b12;
+            border-radius: 60px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
         }
-
-        /* СТАВКИ */
-        .bet-area {
-            background: #0f0e0a80;
+        .info-item { text-align: center; }
+        .info-label { font-size: 0.65rem; color: #aaa; }
+        .info-value { font-size: 1.3rem; font-weight: bold; color: #ffdd88; }
+        
+        .bet-section {
+            background: #0a0e18;
             border-radius: 48px;
             padding: 16px;
             margin-bottom: 24px;
-            backdrop-filter: blur(4px);
         }
-
         .bet-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 12px;
             flex-wrap: wrap;
-            margin-bottom: 16px;
         }
-
-        .bet-label {
-            font-size: 0.9rem;
-            color: #ffcc88;
-        }
-
-        .bet-amount {
-            background: #1e1b14;
+        .bet-label { color: #ffdd99; font-size: 0.8rem; }
+        .bet-control {
+            background: #1a1f2e;
             border-radius: 60px;
-            padding: 8px 16px;
+            padding: 6px 12px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
-
         .bet-input {
-            background: #2e2a22;
+            background: #0a0e18;
             border: none;
-            color: #ffd966;
-            font-size: 1.2rem;
-            font-weight: bold;
-            width: 80px;
+            color: #FFD966;
+            font-size: 1.1rem;
+            width: 90px;
             text-align: center;
             border-radius: 40px;
             padding: 6px 0;
+            font-weight: bold;
         }
-
-        .bet-input:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px #ffaa44;
-        }
-
-        .adjust-btn {
-            background: #f0a500;
+        .bet-input:focus { outline: none; box-shadow: 0 0 0 2px #ffaa44; }
+        .bet-btn {
+            background: #ffaa33;
             border: none;
             width: 36px;
             height: 36px;
@@ -158,826 +125,621 @@
             font-weight: bold;
             font-size: 1.2rem;
             cursor: pointer;
-            transition: 0.05s linear;
+            color: #1f1a0a;
         }
-
-        .adjust-btn:active {
-            transform: scale(0.92);
-        }
-
-        .emoji-bet {
-            font-size: 2rem;
-            cursor: pointer;
-            padding: 5px 12px;
-            background: #00000060;
+        .bet-btn:active { transform: scale(0.94); }
+        
+        .choice-area {
+            background: #080b12;
             border-radius: 60px;
-            transition: 0.1s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .emoji-bet:active {
-            transform: scale(0.94);
-        }
-
-        /* ИГРОВАЯ ЗОНА */
-        .game-area {
-            background: #00000050;
-            border-radius: 48px;
-            padding: 20px 12px;
+            padding: 16px;
             text-align: center;
             margin-bottom: 20px;
-            min-height: 240px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
-
-        .result-animation {
-            font-size: 4rem;
-            transition: all 0.2s ease;
-            animation: pulse 0.4s ease;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.8); opacity: 0; }
-            80% { transform: scale(1.2); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .play-btn {
-            background: #f0a500;
-            border: none;
-            font-size: 1.2rem;
-            font-weight: bold;
-            padding: 14px 30px;
-            border-radius: 60px;
-            color: #1f2a0e;
-            cursor: pointer;
-            margin-top: 15px;
-            width: 80%;
-            transition: 0.07s linear;
-        }
-
-        .play-btn:active {
-            transform: scale(0.96);
-        }
-
-        .history {
-            margin-top: 20px;
-            background: #0f0e0a60;
-            border-radius: 40px;
-            padding: 12px;
-            font-size: 0.7rem;
-            color: #ccc;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            justify-content: center;
-        }
-
-        .history span {
-            background: #2a241a;
-            padding: 4px 12px;
-            border-radius: 30px;
-        }
-
-        footer {
-            font-size: 0.6rem;
-            text-align: center;
-            color: #aa9966;
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-<div class="game-container">
-    <h1>🎲 ДЕМО КАЗИК 🎲<span style="font-size:1.8rem;">🥱</span></h1>
-
-    <div class="balance-area">
-        <div class="balance-label">ТВОЙ БАЛАНС (🥱)</div>
-        <div class="balance-value" id="balanceDisplay">1000</div>
-    </div>
-
-    <div class="game-selector">
-        <div class="game-btn" data-game="coin">🪙 МОНЕТКА 50/50</div>
-        <div class="game-btn" data-game="roulette">🎡 РУЛЕТКА</div>
-    </div>
-
-    <div class="bet-area">
-        <div class="bet-row">
-            <span class="bet-label">СТАВКА 🥱</span>
-            <div class="bet-amount">
-                <button class="adjust-btn" id="decBet">-</button>
-                <input type="number" id="betAmount" class="bet-input" value="50" step="10">
-                <button class="adjust-btn" id="incBet">+</button>
-            </div>
-            <div class="emoji-bet" id="maxBetBtn">🔥 МАКС</div>
-        </div>
-    </div>
-
-    <div class="game-area" id="gameArea">
-        <div id="gameContent">
-            <div style="font-size:1.2rem; margin-bottom: 12px;">🍀 ВЫБЕРИ ИГРУ И СДЕЛАЙ СТАВКУ</div>
-            <div class="result-animation" id="resultEmoji">🥱</div>
-        </div>
-        <button class="play-btn" id="playBtn">СДЕЛАТЬ СТАВКУ</button>
-    </div>
-
-    <div class="history" id="historyBox">
-        <span>⭐ ИСТОРИЯ</span>
-    </div>
-    <footer>⚡ ТОЛЬКО ДЕМО, ВСЕ ВЫИГРЫШИ ВИРТУАЛЬНЫ ⚡<br>ИГРА НА 🥱</footer>
-</div>
-
-<script>
-    // ------ ОСНОВНЫЕ ПЕРЕМЕННЫЕ ------
-    let balance = 1000;            // баланс в 🥱
-    let currentGame = "coin";     // coin / roulette
-    let bet = 50;
-    let rouletteNumbers = Array.from({length: 37}, (_, i) => i); // 0..36
-    let lastResults = [];
-
-    const balanceDisplay = document.getElementById('balanceDisplay');
-    const betInput = document.getElementById('betAmount');
-    const gameArea = document.getElementById('gameArea');
-    const gameContent = document.getElementById('gameContent');
-    const playBtn = document.getElementById('playBtn');
-    const resultEmojiSpan = document.getElementById('resultEmoji');
-    const historyBox = document.getElementById('historyBox');
-
-    // ------ ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ------
-    function updateBalanceUI() {
-        balanceDisplay.innerText = Math.floor(balance);
-    }
-
-    function updateHistory(message, isWin) {
-        const span = document.createElement('span');
-        span.innerText = message;
-        span.style.background = isWin ? '#3a6b2f' : '#6b2f2f';
-        span.style.color = '#ffeaac';
-        historyBox.prepend(span);
-        if (historyBox.children.length > 12) historyBox.removeChild(historyBox.lastChild);
-    }
-
-    function showAnimation(emoji, isWin) {
-        resultEmojiSpan.innerText = emoji;
-        resultEmojiSpan.style.animation = 'none';
-        resultEmojiSpan.offsetHeight;
-        resultEmojiSpan.style.animation = 'pulse 0.4s ease';
-        if (isWin === true) {
-            gameArea.style.boxShadow = '0 0 15px #88ff88';
-            setTimeout(() => gameArea.style.boxShadow = '', 300);
-        } else if (isWin === false) {
-            gameArea.style.boxShadow = '0 0 15px #ff6666';
-            setTimeout(() => gameArea.style.boxShadow = '', 300);
-        }
-    }
-
-    function updateBetUI() {
-        betInput.value = bet;
-        if (bet > balance) bet = balance;
-        if (bet < 1) bet = 1;
-        betInput.value = bet;
-    }
-
-    // ------ ЛОГИКА ИГР ------
-    function playCoin() {
-        if (bet > balance) {
-            updateHistory(`❌ Не хватает 🥱!`, false);
-            return false;
-        }
-        const result = Math.random() < 0.5 ? "ОРЕЛ" : "РЕШКА";
-        const userChoice = "РЕШКА"; // в монетке всегда угадываем? но сделаем случайный выбор для демо? 
-        // Сделаем выбор между орёл/решка в рулетке, а в монетке добавим выбор пользователя (кнопки)
-        // Сейчас для простоты – игрок угадывает РЕШКА каждый раз. Но лучше вынести UI для монетки.
-        // Временно игрок всегда выбирает РЕШКА. (Позже сделаем кнопки)
-        const isWin = (result === "РЕШКА");
-        if (isWin) {
-            const winAmount = bet;
-            balance += winAmount;
-            updateBalanceUI();
-            showAnimation("🪙 +" + winAmount + "🥱", true);
-            updateHistory(`МОНЕТКА: 🪙 РЕШКА! Выигрыш +${winAmount}🥱`, true);
-        } else {
-            balance -= bet;
-            updateBalanceUI();
-            showAnimation("🪙 -" + bet + "🥱", false);
-            updateHistory(`МОНЕТКА: ${result}... Проигрыш -${bet}🥱`, false);
-        }
-        return true;
-    }
-
-    function playRoulette() {
-        if (bet > balance) {
-            updateHistory(`❌ Не хватает 🥱 для рулетки`, false);
-            return false;
-        }
-        const resultNumber = Math.floor(Math.random() * 37);
-        const color = (resultNumber === 0) ? "ЗЕЛЁНЫЙ" : (resultNumber % 2 === 0 ? "ЧЁРНЫЙ" : "КРАСНЫЙ");
-        // для демо игрок ставит на КРАСНОЕ (простая ставка)
-        const userBetOnRed = true;
-        const isWin = (userBetOnRed && color === "КРАСНЫЙ");
-        if (isWin) {
-            const winAmount = bet;
-            balance += winAmount;
-            updateBalanceUI();
-            showAnimation(`🎡 ${resultNumber} 🔴 +${winAmount}🥱`, true);
-            updateHistory(`РУЛЕТКА: ${resultNumber} (${color})! ВЫИГРЫШ +${winAmount}🥱`, true);
-        } else {
-            balance -= bet;
-            updateBalanceUI();
-            showAnimation(`🎡 ${resultNumber} ${color} -${bet}🥱`, false);
-            updateHistory(`РУЛЕТКА: ${resultNumber} (${color})... Проигрыш -${bet}🥱`, false);
-        }
-        return true;
-    }
-
-    // ------ ОБЩАЯ ИГРА ------
-    function makeBet() {
-        if (bet <= 0) bet = 1;
-        if (bet > balance) {
-            updateHistory(`⚠️ Ставка больше баланса!`, false);
-            return;
-        }
-        if (currentGame === "coin") {
-            playCoin();
-        } else if (currentGame === "roulette") {
-            playRoulette();
-        }
-        if (balance <= 0) {
-            updateHistory(`💔 Банкротство... перезагрузи страницу`, false);
-            playBtn.disabled = true;
-        }
-    }
-
-    function setGame(game) {
-        currentGame = game;
-        document.querySelectorAll('.game-btn').forEach(btn => {
-            if (btn.dataset.game === game) btn.classList.add('active');
-            else btn.classList.remove('active');
-        });
-        if (game === "coin") {
-            gameContent.innerHTML = `<div style="font-size:1.1rem; margin-bottom: 10px;">🪙 МОНЕТКА 🪙</div>
-                                      <div style="margin-bottom: 12px;">РЕШКА = ПОБЕДА (ставка x2)</div>
-                                      <div class="result-animation" id="resultEmoji">🥱</div>`;
-        } else {
-            gameContent.innerHTML = `<div style="font-size:1.1rem; margin-bottom: 10px;">🎡 РУЛЕТКА 🎡</div>
-                                      <div style="margin-bottom: 12px;">СТАВКА НА КРАСНОЕ → ВЫИГРЫШ x2</div>
-                                      <div class="result-animation" id="resultEmoji">🥱</div>`;
-        }
-        // восстанавливаем ссылку на resultEmoji (после перезаписи HTML)
-        window.resultEmojiSpan = document.getElementById('resultEmoji');
-        if (!window.resultEmojiSpan) window.resultEmojiSpan = document.getElementById('resultEmoji');
-    }
-
-    // ------ СОБЫТИЯ ------
-    document.getElementById('decBet').addEventListener('click', () => {
-        bet = Math.max(1, bet - 10);
-        updateBetUI();
-    });
-    document.getElementById('incBet').addEventListener('click', () => {
-        bet += 10;
-        if (bet > balance) bet = balance;
-        updateBetUI();
-    });
-    document.getElementById('maxBetBtn').addEventListener('click', () => {
-        bet = balance;
-        updateBetUI();
-    });
-    betInput.addEventListener('change', (e) => {
-        let val = parseInt(e.target.value);
-        if (isNaN(val)) val = 10;
-        bet = Math.min(balance, Math.max(1, val));
-        updateBetUI();
-    });
-
-    document.querySelectorAll('.game-btn').forEach(btn => {
-        btn.addEventListener('click', () => setGame(btn.dataset.game));
-    });
-    playBtn.addEventListener('click', makeBet);
-
-    // инициализация
-    setGame("coin");
-    updateBalanceUI();
-    updateBetUI();
-</script>
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Casino Demo — 🥱 монетка и рулетка</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            min-height: 100vh;
-            background: linear-gradient(145deg, #0a2f1f 0%, #051a0e 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
-            padding: 20px;
-        }
-
-        .game-container {
-            max-width: 550px;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(14px);
-            border-radius: 56px;
-            padding: 24px 20px 32px;
-            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 215, 0, 0.5);
-        }
-
-        h1 {
-            text-align: center;
-            color: #FFD966;
-            font-size: 1.7rem;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .balance-area {
-            background: #1e1a10;
-            border-radius: 100px;
-            padding: 12px 20px;
-            text-align: center;
-            margin-bottom: 24px;
-            border: 1px solid #f3b33d50;
-        }
-
-        .balance-label {
-            color: #bbb;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-        }
-
-        .balance-value {
-            font-size: 2.4rem;
-            font-weight: bold;
-            color: #FFD966;
-            text-shadow: 0 2px 0 #7a5c00;
-        }
-
-        .game-selector {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .game-btn {
+        .choice-buttons { display: flex; gap: 20px; justify-content: center; margin-top: 12px; }
+        .choice {
             flex: 1;
-            background: #2a241a;
-            border: 1px solid #ffb34760;
-            border-radius: 100px;
-            padding: 12px 0;
-            font-size: 1rem;
+            background: #1a1f2e;
+            border: 1px solid rgba(255,215,0,0.4);
+            border-radius: 60px;
+            padding: 14px 0;
             font-weight: bold;
-            color: #ffcc77;
-            text-align: center;
+            font-size: 1.2rem;
+            color: #ffdd99;
             cursor: pointer;
             transition: 0.1s;
+            text-align: center;
         }
-
-        .game-btn.active {
-            background: #f0a500;
-            color: #1f2a0e;
-            box-shadow: 0 0 8px #ffb347;
-            border-color: #ffd966;
-        }
-
-        .game-btn:active {
-            transform: scale(0.96);
-        }
-
-        .bet-area {
-            background: #0f0e0a80;
+        .choice.selected { background: #ffaa33; color: #1a1a0a; border-color: #ffdd66; box-shadow: 0 0 10px rgba(255,200,0,0.5); }
+        .choice:active { transform: scale(0.96); }
+        
+        .risk-panel {
+            background: #0a0e18;
             border-radius: 48px;
             padding: 16px;
-            margin-bottom: 24px;
-            backdrop-filter: blur(4px);
-        }
-
-        .bet-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
-        }
-
-        .bet-label {
-            font-size: 0.9rem;
-            color: #ffcc88;
-        }
-
-        .bet-amount {
-            background: #1e1b14;
-            border-radius: 60px;
-            padding: 8px 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .bet-input {
-            background: #2e2a22;
-            border: none;
-            color: #ffd966;
-            font-size: 1.2rem;
-            font-weight: bold;
-            width: 80px;
+            margin-top: 8px;
             text-align: center;
-            border-radius: 40px;
-            padding: 6px 0;
         }
-
-        .bet-input:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px #ffaa44;
-        }
-
-        .adjust-btn {
-            background: #f0a500;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
+        .current-multiplier {
+            font-size: 1.8rem;
             font-weight: bold;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: 0.05s linear;
+            color: #ffcc55;
+            margin: 8px 0;
         }
-
-        .adjust-btn:active {
-            transform: scale(0.92);
-        }
-
-        .emoji-bet {
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 8px 16px;
-            background: #00000060;
-            border-radius: 60px;
-            transition: 0.1s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: bold;
-            color: #ffcc66;
-        }
-
-        .emoji-bet:active {
-            transform: scale(0.94);
-        }
-
-        .coin-choice {
+        .action-buttons {
             display: flex;
             gap: 15px;
-            justify-content: center;
-            margin: 15px 0;
+            margin-top: 12px;
         }
-        .coin-option {
-            background: #2a241a;
-            border-radius: 60px;
-            padding: 8px 20px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.05s linear;
-            border: 1px solid #ffb347;
-            color: #ffcc77;
-        }
-        .coin-option.selected {
-            background: #f0a500;
-            color: #1f2a0e;
-            box-shadow: 0 0 6px #ffcc44;
-        }
-        .coin-option:active {
-            transform: scale(0.95);
-        }
-
-        .game-area {
-            background: #00000050;
-            border-radius: 48px;
-            padding: 20px 12px;
-            text-align: center;
-            margin-bottom: 20px;
-            min-height: 280px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .result-animation {
-            font-size: 4rem;
-            transition: all 0.2s ease;
-            animation: pulse 0.4s ease;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.8); opacity: 0; }
-            80% { transform: scale(1.2); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .play-btn {
-            background: #f0a500;
+        .action-btn {
+            flex: 1;
             border: none;
-            font-size: 1.2rem;
-            font-weight: bold;
-            padding: 14px 30px;
             border-radius: 60px;
-            color: #1f2a0e;
+            padding: 14px 0;
+            font-weight: bold;
+            font-size: 1rem;
             cursor: pointer;
-            margin-top: 15px;
-            width: 80%;
             transition: 0.07s linear;
         }
-
-        .play-btn:active {
-            transform: scale(0.96);
+        .action-btn:active { transform: scale(0.96); }
+        .take-btn { background: #2a8b5c; color: white; }
+        .risk-btn { background: #ffaa33; color: #1f1a0a; }
+        .play-btn {
+            background: #ffaa33;
+            width: 100%;
+            border: none;
+            border-radius: 60px;
+            padding: 16px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1f1a0a;
+            cursor: pointer;
+            margin-top: 8px;
         }
-
+        .play-btn:active { transform: scale(0.97); }
+        
         .history {
-            margin-top: 20px;
-            background: #0f0e0a60;
-            border-radius: 40px;
+            background: #05080f;
+            border-radius: 36px;
             padding: 12px;
-            font-size: 0.7rem;
-            color: #ccc;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            justify-content: center;
-            max-height: 100px;
+            margin-top: 20px;
+            max-height: 140px;
             overflow-y: auto;
         }
-
-        .history span {
-            background: #2a241a;
-            padding: 4px 12px;
+        .history-title { font-size: 0.7rem; color: #ffcc77; margin-bottom: 8px; padding-left: 8px; }
+        .history-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .history-item {
+            background: #13182a;
             border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            color: #ddd;
         }
-
-        footer {
-            font-size: 0.6rem;
-            text-align: center;
-            color: #aa9966;
-            margin-top: 20px;
+        .history-item.win { background: #2a6b3f; color: #d4ffb0; }
+        .history-item.loss { background: #6b2f2f; color: #ffbcbc; }
+        .history-item.take { background: #3a6b8c; color: #c0e0ff; }
+        footer { font-size: 0.6rem; text-align: center; color: #6a6a7a; margin-top: 20px; }
+        @media (max-width: 480px) {
+            .choice { font-size: 1rem; padding: 10px 0; }
+            .bet-input { width: 70px; }
+            .action-btn { padding: 10px 0; font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
 <div class="game-container">
-    <h1>🎲 ДЕМО КАЗИК 🎲<span style="font-size:1.8rem;">🥱</span></h1>
-
-    <div class="balance-area">
-        <div class="balance-label">ТВОЙ БАЛАНС (🥱)</div>
-        <div class="balance-value" id="balanceDisplay">1000</div>
+    <div class="header">
+        <div class="logo">⭐ STARSFLIP</div>
+        <div class="how-btn" id="howBtn">❓ Риск-режим</div>
     </div>
 
-    <div class="game-selector">
-        <div class="game-btn" data-game="coin">🪙 МОНЕТКА 50/50</div>
-        <div class="game-btn" data-game="roulette">🎡 РУЛЕТКА (КРАСНОЕ)</div>
+    <div class="balance-card">
+        <div class="balance-label">ТВОЙ БАЛАНС</div>
+        <div class="balance-value" id="balanceValue">1000</div>
+        <div class="balance-currency">⭐ STARS</div>
     </div>
 
-    <div class="bet-area">
+    <div class="info-row">
+        <div class="info-item"><div class="info-label">РАУНД</div><div class="info-value" id="roundNum">1</div></div>
+        <div class="info-item"><div class="info-label">БАЗОВЫЙ КЭФ</div><div class="info-value">x1.95</div></div>
+    </div>
+
+    <div class="bet-section">
         <div class="bet-row">
-            <span class="bet-label">СТАВКА 🥱</span>
-            <div class="bet-amount">
-                <button class="adjust-btn" id="decBet">-</button>
+            <span class="bet-label">СТАВКА (⭐)</span>
+            <div class="bet-control">
+                <button class="bet-btn" id="decBet">−</button>
                 <input type="number" id="betAmount" class="bet-input" value="50" step="10">
-                <button class="adjust-btn" id="incBet">+</button>
+                <button class="bet-btn" id="incBet">+</button>
             </div>
-            <div class="emoji-bet" id="maxBetBtn">🔥 ВСЕ 🥱</div>
+            <button class="bet-btn" id="maxBet">MAX</button>
         </div>
     </div>
 
-    <div class="game-area" id="gameArea">
-        <div id="gameContent">
-            <div style="font-size:1.2rem; margin-bottom: 12px;">🍀 ВЫБЕРИ ИГРУ И СДЕЛАЙ СТАВКУ</div>
-            <div class="result-animation" id="resultEmoji">🥱</div>
+    <div class="choice-area">
+        <div style="font-size:0.8rem; color:#ffcc77;">ВЫБЕРИ СТОРОНУ</div>
+        <div class="choice-buttons">
+            <div class="choice" data-side="ОРЕЛ">🪙 ОРЁЛ</div>
+            <div class="choice" data-side="РЕШКА">🪙 РЕШКА</div>
         </div>
-        <button class="play-btn" id="playBtn">СДЕЛАТЬ СТАВКУ</button>
     </div>
 
-    <div class="history" id="historyBox">
-        <span>⭐ ИСТОРИЯ</span>
+    <!-- Панель с текущим множителем и кнопками ЗАБРАТЬ / КРУТИТЬ -->
+    <div class="risk-panel" id="riskPanel" style="display: none;">
+        <div style="font-size:0.75rem; color:#ffcc77;">ТЕКУЩИЙ МНОЖИТЕЛЬ</div>
+        <div class="current-multiplier" id="currentMultiplier">1.00x</div>
+        <div class="action-buttons">
+            <button class="action-btn take-btn" id="takeBtn">💰 ЗАБРАТЬ</button>
+            <button class="action-btn risk-btn" id="riskBtn">🔄 КРУТИТЬ ДАЛЬШЕ</button>
+        </div>
     </div>
-    <footer>⚡ ТОЛЬКО ДЕМО, ВСЕ ВЫИГРЫШИ ВИРТУАЛЬНЫ ⚡<br>ИГРА НА 🥱 | МОНЕТКА → УГАДАЙ ОРЁЛ/РЕШКУ | РУЛЕТКА → КРАСНОЕ x2</footer>
+
+    <button class="play-btn" id="playBtn">СДЕЛАТЬ СТАВКУ</button>
+
+    <div class="history">
+        <div class="history-title">📜 ИСТОРИЯ</div>
+        <div class="history-list" id="historyList">
+            <span class="history-item">⭐ Добро пожаловать в StarsFlip!</span>
+        </div>
+    </div>
+    <footer>⚡ ЧЕСТНАЯ МОНЕТКА 50/50 | КОМИССИЯ 5%<br>🔥 ПРОИГРЫШ В РИСК-РЕЖИМЕ = ПОТЕРЯ ВСЕЙ ТЕКУЩЕЙ СТАВКИ</footer>
 </div>
 
 <script>
-    // ------ ОСНОВНЫЕ ПЕРЕМЕННЫЕ ------
-    let balance = 1000;
-    let currentGame = "coin";
-    let bet = 50;
-    let coinChoice = "ОРЕЛ";   // ОРЕЛ или РЕШКА
-    let lastResults = [];
+    // ----- ОСНОВНЫЕ ПАРАМЕТРЫ -----
+    let balance = 1000;              // баланс в Stars
+    let currentRound = 1;
+    let bet = 50;                    // начальная ставка
+    let userChoice = "ОРЕЛ";
+    const MAX_BET = 1000;
+    const BASE_MULTIPLIER = 1.95;    // базовый множитель (с учётом комиссии)
+
+    // РИСК-РЕЖИМ (активен после первого выигрыша)
+    let riskActive = false;          // true = игрок в режиме "крутить дальше"
+    let currentRiskMultiplier = 1.0; // текущий накопленный множитель
+    let currentRiskStake = 0;        // сумма, которая сейчас в игре (ставка * множитель)
 
     // DOM элементы
-    const balanceDisplay = document.getElementById('balanceDisplay');
+    const balanceEl = document.getElementById('balanceValue');
+    const roundEl = document.getElementById('roundNum');
     const betInput = document.getElementById('betAmount');
-    const gameArea = document.getElementById('gameArea');
-    const gameContentDiv = document.getElementById('gameContent');
+    const historyList = document.getElementById('historyList');
     const playBtn = document.getElementById('playBtn');
-    const historyBox = document.getElementById('historyBox');
+    const riskPanel = document.getElementById('riskPanel');
+    const currentMultiplierSpan = document.getElementById('currentMultiplier');
+    const takeBtn = document.getElementById('takeBtn');
+    const riskBtn = document.getElementById('riskBtn');
 
-    let resultEmojiSpan = document.getElementById('resultEmoji');
-
+    // Обновление UI баланса
     function updateBalanceUI() {
-        balanceDisplay.innerText = Math.floor(balance);
+        balanceEl.innerText = Math.floor(balance);
     }
 
-    function updateHistory(message, isWin) {
-        const span = document.createElement('span');
-        span.innerText = message;
-        span.style.background = isWin ? '#3a6b2f' : '#6b2f2f';
-        span.style.color = '#ffeaac';
-        historyBox.prepend(span);
-        while (historyBox.children.length > 12) historyBox.removeChild(historyBox.lastChild);
+    // Добавление записи в историю
+    function addHistory(text, type) {   // type: 'win', 'loss', 'take'
+        const item = document.createElement('div');
+        item.className = 'history-item';
+        if (type === 'win') item.classList.add('win');
+        else if (type === 'loss') item.classList.add('loss');
+        else if (type === 'take') item.classList.add('take');
+        item.innerText = text;
+        historyList.prepend(item);
+        while (historyList.children.length > 14) historyList.removeChild(historyList.lastChild);
     }
 
-    function showAnimation(emoji, isWin) {
-        if (!resultEmojiSpan) resultEmojiSpan = document.getElementById('resultEmoji');
-        if (!resultEmojiSpan) return;
-        resultEmojiSpan.innerText = emoji;
-        resultEmojiSpan.style.animation = 'none';
-        resultEmojiSpan.offsetHeight;
-        resultEmojiSpan.style.animation = 'pulse 0.4s ease';
-        if (isWin === true) {
-            gameArea.style.boxShadow = '0 0 15px #88ff88';
-            setTimeout(() => gameArea.style.boxShadow = '', 300);
-        } else if (isWin === false) {
-            gameArea.style.boxShadow = '0 0 15px #ff6666';
-            setTimeout(() => gameArea.style.boxShadow = '', 300);
-        }
-    }
-
+    // Обновить отображение ставки
     function updateBetUI() {
-        betInput.value = bet;
-        if (bet > balance) bet = balance;
         if (bet < 1) bet = 1;
+        if (bet > MAX_BET) bet = MAX_BET;
+        if (bet > balance) bet = balance;
         betInput.value = bet;
     }
 
-    // ------ МОНЕТКА (выбор орла/решки) ------
-    function renderCoinUI() {
-        gameContentDiv.innerHTML = `
-            <div style="font-size:1.1rem; margin-bottom: 10px;">🪙 МОНЕТКА 🪙</div>
-            <div class="coin-choice" id="coinChoiceBox">
-                <div class="coin-option ${coinChoice === 'ОРЕЛ' ? 'selected' : ''}" data-choice="ОРЕЛ">🪙 ОРЁЛ</div>
-                <div class="coin-option ${coinChoice === 'РЕШКА' ? 'selected' : ''}" data-choice="РЕШКА">🪙 РЕШКА</div>
-            </div>
-            <div class="result-animation" id="resultEmoji">🥱</div>
-        `;
-        document.querySelectorAll('.coin-option').forEach(opt => {
-            opt.addEventListener('click', (e) => {
-                coinChoice = opt.dataset.choice;
-                renderCoinUI();  // перерисовка
-            });
+    // Выбор стороны (орёл/решка)
+    function setChoice(choice) {
+        userChoice = choice;
+        document.querySelectorAll('.choice').forEach(el => {
+            if (el.dataset.side === choice) el.classList.add('selected');
+            else el.classList.remove('selected');
         });
-        resultEmojiSpan = document.getElementById('resultEmoji');
     }
 
-    function playCoin() {
-        if (bet > balance) {
-            updateHistory(`❌ Не хватает 🥱!`, false);
-            return false;
-        }
+    // Сброс риск-режима (после забора или проигрыша)
+    function resetRiskMode() {
+        riskActive = false;
+        riskPanel.style.display = 'none';
+        currentRiskMultiplier = 1.0;
+        currentRiskStake = 0;
+        playBtn.disabled = false;
+        playBtn.style.opacity = '1';
+    }
+
+    // Забрать текущий выигрыш (фиксация)
+    function takeProfit() {
+        if (!riskActive) return;
+        const winAmount = currentRiskStake;
+        balance += winAmount;
+        updateBalanceUI();
+        addHistory(`✅ ЗАБРАЛ(А) ${winAmount} ⭐ (множитель ${currentRiskMultiplier.toFixed(2)}x)`, 'take');
+        resetRiskMode();
+        // увеличиваем раунд
+        currentRound++;
+        roundEl.innerText = currentRound;
+    }
+
+    // Риск-бросок (продолжить)
+    function riskFlip() {
+        if (!riskActive) return;
+        // бросаем монетку
         const result = Math.random() < 0.5 ? "ОРЕЛ" : "РЕШКА";
-        const isWin = (result === coinChoice);
-        if (isWin) {
-            const winAmount = bet;
-            balance += winAmount;
-            updateBalanceUI();
-            showAnimation(`🪙 ${result} +${winAmount}🥱`, true);
-            updateHistory(`МОНЕТКА: ${result}! ВЫИГРЫШ +${winAmount}🥱`, true);
-        } else {
-            balance -= bet;
-            updateBalanceUI();
-            showAnimation(`🪙 ${result} -${bet}🥱`, false);
-            updateHistory(`МОНЕТКА: ${result}... Проигрыш -${bet}🥱`, false);
-        }
-        return true;
-    }
-
-    // ------ РУЛЕТКА (ставка на красное) ------
-    function renderRouletteUI() {
-        gameContentDiv.innerHTML = `
-            <div style="font-size:1.1rem; margin-bottom: 10px;">🎡 РУЛЕТКА 🎡</div>
-            <div style="margin-bottom: 12px;">⚡ СТАВКА НА КРАСНОЕ (ВЫИГРЫШ x2) ⚡</div>
-            <div class="result-animation" id="resultEmoji">🥱</div>
-        `;
-        resultEmojiSpan = document.getElementById('resultEmoji');
-    }
-
-    function playRoulette() {
-        if (bet > balance) {
-            updateHistory(`❌ Не хватает 🥱 для рулетки`, false);
-            return false;
-        }
-        const resultNumber = Math.floor(Math.random() * 37);
-        let color = "ЧЁРНЫЙ";
-        if (resultNumber === 0) color = "ЗЕЛЁНЫЙ";
-        else if (resultNumber % 2 === 1) color = "КРАСНЫЙ";
-        else color = "ЧЁРНЫЙ";
+        const isWin = (result === userChoice);
         
-        const isWin = (color === "КРАСНЫЙ");
         if (isWin) {
-            const winAmount = bet;
-            balance += winAmount;
-            updateBalanceUI();
-            showAnimation(`🎡 ${resultNumber} 🔴 +${winAmount}🥱`, true);
-            updateHistory(`РУЛЕТКА: ${resultNumber} (${color})! ВЫИГРЫШ +${winAmount}🥱`, true);
+            // увеличиваем множитель
+            currentRiskMultiplier *= BASE_MULTIPLIER;
+            currentRiskStake = Math.floor(bet * currentRiskMultiplier);
+            currentMultiplierSpan.innerText = currentRiskMultiplier.toFixed(2) + 'x';
+            addHistory(`🪙 РИСК: ${result} ✅ ВЫИГРЫШ! МНОЖИТЕЛЬ ${currentRiskMultiplier.toFixed(2)}x`, 'win');
         } else {
-            balance -= bet;
-            updateBalanceUI();
-            showAnimation(`🎡 ${resultNumber} ${color === "ЗЕЛЁНЫЙ" ? "🟢" : "⚫"} -${bet}🥱`, false);
-            updateHistory(`РУЛЕТКА: ${resultNumber} (${color})... Проигрыш -${bet}🥱`, false);
+            // проигрыш — теряем всё
+            addHistory(`🪙 РИСК: ${result} ❌ ПРОИГРЫШ! ПОТЕРЯНО ${currentRiskStake} ⭐`, 'loss');
+            resetRiskMode();
+            currentRound++;
+            roundEl.innerText = currentRound;
         }
-        return true;
     }
 
-    // ------ ОБЩАЯ ИГРА ------
-    function makeBet() {
-        if (bet <= 0) bet = 1;
+    // Новая игра (первый бросок)
+    function firstFlip() {
         if (bet > balance) {
-            updateHistory(`⚠️ Ставка больше баланса!`, false);
+            addHistory(`❌ Не хватает Stars для ставки ${bet}`, 'loss');
             return;
         }
-        if (currentGame === "coin") {
-            playCoin();
-        } else if (currentGame === "roulette") {
-            playRoulette();
-        }
-        if (balance <= 0) {
-            updateHistory(`💔 Банкротство... перезагрузи страницу`, false);
+        const result = Math.random() < 0.5 ? "ОРЕЛ" : "РЕШКА";
+        const isWin = (result === userChoice);
+        
+        if (isWin) {
+            const winAmountRaw = Math.floor(bet * BASE_MULTIPLIER);
+            // Включаем риск-режим: текущая сумма в игре = winAmountRaw
+            riskActive = true;
+            currentRiskMultiplier = BASE_MULTIPLIER;
+            currentRiskStake = winAmountRaw;
+            currentMultiplierSpan.innerText = currentRiskMultiplier.toFixed(2) + 'x';
+            riskPanel.style.display = 'block';
             playBtn.disabled = true;
+            playBtn.style.opacity = '0.5';
+            addHistory(`🪙 ${result} ✅ ВЫИГРЫШ! МОЖЕШЬ ЗАБРАТЬ ${winAmountRaw} ⭐ ИЛИ КРУТИТЬ ДАЛЬШЕ`, 'win');
+        } else {
+            // проигрыш — теряем ставку
+            balance -= bet;
+            updateBalanceUI();
+            addHistory(`🪙 ${result} ❌ ПРОИГРЫШ -${bet} ⭐`, 'loss');
+            currentRound++;
+            roundEl.innerText = currentRound;
+            if (balance <= 0) {
+                addHistory(`💔 Банкротство. Перезагрузи страницу`, 'loss');
+                playBtn.disabled = true;
+            }
         }
         updateBetUI();
     }
 
-    function setGame(game) {
-        currentGame = game;
-        document.querySelectorAll('.game-btn').forEach(btn => {
-            if (btn.dataset.game === game) btn.classList.add('active');
-            else btn.classList.remove('active');
-        });
-        if (game === "coin") {
-            renderCoinUI();
-        } else {
-            renderRouletteUI();
+    // Главный обработчик ставки
+    function makeBet() {
+        if (riskActive) return; // если уже в риск-режиме — кнопка недоступна
+        if (bet < 1 || bet > balance) {
+            addHistory(`⚠️ Некорректная ставка`, 'loss');
+            return;
         }
+        firstFlip();
     }
 
-    // ------ СОБЫТИЯ ------
+    // ---- СОБЫТИЯ ----
     document.getElementById('decBet').addEventListener('click', () => {
         bet = Math.max(1, bet - 10);
         updateBetUI();
     });
     document.getElementById('incBet').addEventListener('click', () => {
-        bet += 10;
+        bet = Math.min(MAX_BET, bet + 10);
         if (bet > balance) bet = balance;
         updateBetUI();
     });
-    document.getElementById('maxBetBtn').addEventListener('click', () => {
-        bet = balance;
+    document.getElementById('maxBet').addEventListener('click', () => {
+        bet = Math.min(MAX_BET, balance);
         updateBetUI();
     });
     betInput.addEventListener('change', (e) => {
-        let val = parseInt(e.target.value);
-        if (isNaN(val)) val = 10;
-        bet = Math.min(balance, Math.max(1, val));
+        let v = parseInt(e.target.value);
+        if (isNaN(v)) v = 10;
+        bet = Math.min(MAX_BET, Math.max(1, v));
+        if (bet > balance) bet = balance;
         updateBetUI();
     });
 
-    document.querySelectorAll('.game-btn').forEach(btn => {
-        btn.addEventListener('click', () => setGame(btn.dataset.game));
+    document.querySelectorAll('.choice').forEach(btn => {
+        btn.addEventListener('click', () => setChoice(btn.dataset.side));
     });
-    playBtn.addEventListener('click', makeBet);
 
-    // ИНИЦИАЛИЗАЦИЯ
-    setGame("coin");
+    playBtn.addEventListener('click', makeBet);
+    takeBtn.addEventListener('click', takeProfit);
+    riskBtn.addEventListener('click', riskFlip);
+
+    // Информация "Как играть"
+    document.getElementById('howBtn').addEventListener('click', () => {
+        alert(`⭐ STARSFLIP — риск-монетка ⭐\n\n🎲 ПРАВИЛА:\n1. Сделай ставку и выбери сторону (Орёл/Решка).\n2. Если выиграл → можешь ЗАБРАТЬ выигрыш или КРУТИТЬ ДАЛЬШЕ.\n3. При КРУТИТЬ ДАЛЬШЕ множитель растёт, но при проигрыше теряешь ВСЁ.\n4. Комиссия 5% уже учтена в множителе x1.95.\n\n🔥 Играй ответственно, это демо.`);
+    });
+
+    // Инициализация
+    setChoice("ОРЕЛ");
     updateBalanceUI();
     updateBetUI();
 </script>
-</body>
-</html>
+<script>
+    // ----- ОСНОВНЫЕ ПАРАМЕТРЫ -----
+    let balance = 1000;
+    let currentRound = 1;
+    let bet = 50;
+    let userChoice = "ОРЕЛ";
+    const MAX_BET = 1000;
+    const BASE_MULTIPLIER = 1.95;
+
+    let riskActive = false;
+    let currentRiskMultiplier = 1.0;
+    let currentRiskStake = 0;
+
+    // ДОПОЛНИТЕЛЬНО: аудио (опционально, без внешних файлов)
+    let audioEnabled = false;
+    let audioContext = null;
+
+    const balanceEl = document.getElementById('balanceValue');
+    const roundEl = document.getElementById('roundNum');
+    const betInput = document.getElementById('betAmount');
+    const historyList = document.getElementById('historyList');
+    const playBtn = document.getElementById('playBtn');
+    const riskPanel = document.getElementById('riskPanel');
+    const currentMultiplierSpan = document.getElementById('currentMultiplier');
+    const takeBtn = document.getElementById('takeBtn');
+    const riskBtn = document.getElementById('riskBtn');
+
+    // ЗВУК (короткие beep без файлов)
+    function playBeep(type) {
+        if (!audioEnabled) return;
+        try {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            oscillator.type = 'sine';
+            let frequency = type === 'win' ? 880 : 440;
+            oscillator.frequency.value = frequency;
+            gainNode.gain.value = 0.15;
+            oscillator.start();
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.5);
+            oscillator.stop(audioContext.currentTime + 0.3);
+        } catch(e) { console.log("audio error"); }
+    }
+
+    // СОХРАНЕНИЕ / ЗАГРУЗКА (localStorage)
+    function saveGame() {
+        const save = {
+            balance: balance,
+            currentRound: currentRound,
+            bet: bet,
+            userChoice: userChoice,
+            riskActive: riskActive,
+            currentRiskMultiplier: currentRiskMultiplier,
+            currentRiskStake: currentRiskStake
+        };
+        localStorage.setItem('StarsFlipSave', JSON.stringify(save));
+    }
+
+    function loadGame() {
+        const saved = localStorage.getItem('StarsFlipSave');
+        if (saved) {
+            try {
+                const data = JSON.parse(saved);
+                balance = data.balance ?? 1000;
+                currentRound = data.currentRound ?? 1;
+                bet = data.bet ?? 50;
+                userChoice = data.userChoice ?? "ОРЕЛ";
+                riskActive = data.riskActive ?? false;
+                currentRiskMultiplier = data.currentRiskMultiplier ?? 1.0;
+                currentRiskStake = data.currentRiskStake ?? 0;
+                if (riskActive) {
+                    riskPanel.style.display = 'block';
+                    currentMultiplierSpan.innerText = currentRiskMultiplier.toFixed(2) + 'x';
+                    playBtn.disabled = true;
+                    playBtn.style.opacity = '0.5';
+                } else {
+                    riskPanel.style.display = 'none';
+                    playBtn.disabled = false;
+                    playBtn.style.opacity = '1';
+                }
+                setChoice(userChoice);
+                updateBalanceUI();
+                updateBetUI();
+                roundEl.innerText = currentRound;
+            } catch(e) {}
+        }
+    }
+
+    function updateBalanceUI() {
+        balanceEl.innerText = Math.floor(balance);
+        saveGame();
+    }
+
+    function addHistory(text, type) {
+        const item = document.createElement('div');
+        item.className = 'history-item';
+        if (type === 'win') item.classList.add('win');
+        else if (type === 'loss') item.classList.add('loss');
+        else if (type === 'take') item.classList.add('take');
+        item.innerText = text;
+        historyList.prepend(item);
+        while (historyList.children.length > 14) historyList.removeChild(historyList.lastChild);
+        saveGame();
+    }
+
+    function updateBetUI() {
+        if (bet < 1) bet = 1;
+        if (bet > MAX_BET) bet = MAX_BET;
+        if (bet > balance) bet = balance;
+        betInput.value = bet;
+        saveGame();
+    }
+
+    function setChoice(choice) {
+        userChoice = choice;
+        document.querySelectorAll('.choice').forEach(el => {
+            if (el.dataset.side === choice) el.classList.add('selected');
+            else el.classList.remove('selected');
+        });
+        saveGame();
+    }
+
+    function resetRiskMode() {
+        riskActive = false;
+        riskPanel.style.display = 'none';
+        currentRiskMultiplier = 1.0;
+        currentRiskStake = 0;
+        playBtn.disabled = false;
+        playBtn.style.opacity = '1';
+        saveGame();
+    }
+
+    function takeProfit() {
+        if (!riskActive) return;
+        const winAmount = currentRiskStake;
+        balance += winAmount;
+        updateBalanceUI();
+        addHistory(`✅ ЗАБРАЛ(А) ${winAmount} ⭐ (множитель ${currentRiskMultiplier.toFixed(2)}x)`, 'take');
+        playBeep('win');
+        resetRiskMode();
+        currentRound++;
+        roundEl.innerText = currentRound;
+        saveGame();
+    }
+
+    function riskFlip() {
+        if (!riskActive) return;
+        const result = Math.random() < 0.5 ? "ОРЕЛ" : "РЕШКА";
+        const isWin = (result === userChoice);
+        if (isWin) {
+            currentRiskMultiplier *= BASE_MULTIPLIER;
+            currentRiskStake = Math.floor(bet * currentRiskMultiplier);
+            currentMultiplierSpan.innerText = currentRiskMultiplier.toFixed(2) + 'x';
+            addHistory(`🪙 РИСК: ${result} ✅ ВЫИГРЫШ! МНОЖИТЕЛЬ ${currentRiskMultiplier.toFixed(2)}x`, 'win');
+            playBeep('win');
+        } else {
+            addHistory(`🪙 РИСК: ${result} ❌ ПРОИГРЫШ! ПОТЕРЯНО ${currentRiskStake} ⭐`, 'loss');
+            playBeep('loss');
+            resetRiskMode();
+            currentRound++;
+            roundEl.innerText = currentRound;
+        }
+        saveGame();
+    }
+
+    function firstFlip() {
+        if (bet > balance) {
+            addHistory(`❌ Не хватает Stars для ставки ${bet}`, 'loss');
+            return;
+        }
+        const result = Math.random() < 0.5 ? "ОРЕЛ" : "РЕШКА";
+        const isWin = (result === userChoice);
+        if (isWin) {
+            const winAmountRaw = Math.floor(bet * BASE_MULTIPLIER);
+            riskActive = true;
+            currentRiskMultiplier = BASE_MULTIPLIER;
+            currentRiskStake = winAmountRaw;
+            currentMultiplierSpan.innerText = currentRiskMultiplier.toFixed(2) + 'x';
+            riskPanel.style.display = 'block';
+            playBtn.disabled = true;
+            playBtn.style.opacity = '0.5';
+            addHistory(`🪙 ${result} ✅ ВЫИГРЫШ! МОЖЕШЬ ЗАБРАТЬ ${winAmountRaw} ⭐ ИЛИ КРУТИТЬ ДАЛЬШЕ`, 'win');
+            playBeep('win');
+        } else {
+            balance -= bet;
+            updateBalanceUI();
+            addHistory(`🪙 ${result} ❌ ПРОИГРЫШ -${bet} ⭐`, 'loss');
+            playBeep('loss');
+            currentRound++;
+            roundEl.innerText = currentRound;
+            if (balance <= 0) {
+                addHistory(`💔 Банкротство. Перезагрузи страницу`, 'loss');
+                playBtn.disabled = true;
+            }
+        }
+        updateBetUI();
+        saveGame();
+    }
+
+    function makeBet() {
+        if (riskActive) return;
+        if (bet < 1 || bet > balance) {
+            addHistory(`⚠️ Некорректная ставка`, 'loss');
+            return;
+        }
+        firstFlip();
+    }
+
+    // ---- ВКЛЮЧЕНИЕ ЗВУКА ПОСЛЕ ПЕРВОГО ТАПА (для автономности) ----
+    function enableAudioOnFirstTap() {
+        if (audioEnabled) return;
+        audioEnabled = true;
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioContext.state === 'suspended') audioContext.resume();
+    }
+    document.body.addEventListener('click', enableAudioOnFirstTap, { once: true });
+
+    // ---- СОБЫТИЯ ----
+    document.getElementById('decBet').addEventListener('click', () => {
+        bet = Math.max(1, bet - 10);
+        updateBetUI();
+    });
+    document.getElementById('incBet').addEventListener('click', () => {
+        bet = Math.min(MAX_BET, bet + 10);
+        if (bet > balance) bet = balance;
+        updateBetUI();
+    });
+    document.getElementById('maxBet').addEventListener('click', () => {
+        bet = Math.min(MAX_BET, balance);
+        updateBetUI();
+    });
+    betInput.addEventListener('change', (e) => {
+        let v = parseInt(e.target.value);
+        if (isNaN(v)) v = 10;
+        bet = Math.min(MAX_BET, Math.max(1, v));
+        if (bet > balance) bet = balance;
+        updateBetUI();
+    });
+
+    document.querySelectorAll('.choice').forEach(btn => {
+        btn.addEventListener('click', () => setChoice(btn.dataset.side));
+    });
+
+    playBtn.addEventListener('click', makeBet);
+    takeBtn.addEventListener('click', takeProfit);
+    riskBtn.addEventListener('click', riskFlip);
+
+    document.getElementById('howBtn').addEventListener('click', () => {
+        alert(`⭐ STARSFLIP — риск-монетка ⭐\n\n🎲 ПРАВИЛА:\n1. Сделай ставку и выбери сторону (Орёл/Решка).\n2. Если выиграл → можешь ЗАБРАТЬ выигрыш или КРУТИТЬ ДАЛЬШЕ.\n3. При КРУТИТЬ ДАЛЬШЕ множитель растёт, но при проигрыше теряешь ВСЁ.\n4. Комиссия 5% уже учтена.\n\n🎵 Звук включается после первого касания.\n💾 Прогресс сохраняется автоматически.`);
+    });
+
+    // Инициализация
+    setChoice("ОРЕЛ");
+    loadGame();
+    updateBalanceUI();
+    updateBetUI();
+    if (riskActive) {
+        riskPanel.style.display = 'block';
+        currentMultiplierSpan.innerText = currentRiskMultiplier.toFixed(2) + 'x';
+        playBtn.disabled = true;
+        playBtn.style.opacity = '0.5';
+    }
+</script>
