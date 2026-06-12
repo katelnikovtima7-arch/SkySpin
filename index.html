@@ -66,13 +66,15 @@
             font-size: 0.6rem;
             color: #5A6E8A;
         }
-        /* горизонтальный скролл для 12 монеток */
+        /* горизонтальный скролл с маской (видно 4 кружка, остальные скрыты) */
         .multiplier-strip-wrapper {
             overflow-x: auto;
             overflow-y: hidden;
             padding: 16px 16px 8px 16px;
             flex-shrink: 0;
             scrollbar-width: thin;
+            mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
         }
         .multiplier-strip {
             display: flex;
@@ -100,7 +102,7 @@
             color: white;
             box-shadow: 0 0 8px #2f9eff;
         }
-        /* центральная секция: РАУНД + монета + КЭФ (без кружков) */
+        /* центральная секция: РАУНД + монета + КЭФ */
         .center-stats {
             display: flex;
             align-items: center;
@@ -121,7 +123,7 @@
             font-size: 0.6rem;
             color: #5A6E8A;
         }
-        /* главная монета */
+        /* главная монета — ровно по центру */
         .main-coin {
             text-align: center;
         }
@@ -321,19 +323,19 @@
         <div class="logo">StarsFlip</div>
         <div class="how-btn" id="howBtn">Как играть</div>
         <div class="balance-top">
-            <div class="amount" id="balanceValue">21000</div>
+            <div class="amount" id="balanceValue">31000</div>
             <div class="label">⭐ STARS</div>
         </div>
     </div>
 
-    <!-- 12 монеток (кружки) с горизонтальным скроллом -->
+    <!-- 12 монеток (кружки) с горизонтальным скроллом + маска (видно 4 штуки) -->
     <div class="multiplier-strip-wrapper">
         <div class="multiplier-strip" id="multiplierStrip">
             <!-- 12 кружков будут созданы через JS -->
         </div>
     </div>
 
-    <!-- центральная секция: РАУНД (слева), монета (центр), КЭФ (справа) - без кружков -->
+    <!-- центральная секция: РАУНД (слева), монета (центр), КЭФ (справа) -->
     <div class="center-stats">
         <div class="stat-item">
             <div class="value" id="roundNum">1</div>
@@ -399,7 +401,7 @@
 </div>
 <script>
     // ------------------- ОСНОВНЫЕ ПАРАМЕТРЫ -------------------
-    let balance = 21000;
+    let balance = 31000;
     let currentRound = 1;
     let winStreak = 0;
     let bet = 100;
@@ -461,6 +463,13 @@
             } else {
                 multiplierCircles[i].classList.remove('active');
                 multiplierCircles[i].innerText = '?';
+            }
+        }
+        // автоскролл к последней открытой монетке
+        if (currentRiskStep > 0 && currentRiskStep <= multiplierCircles.length) {
+            const lastActiveCircle = multiplierCircles[currentRiskStep - 1];
+            if (lastActiveCircle) {
+                lastActiveCircle.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }
         }
     }
@@ -726,7 +735,7 @@
         if (saved) {
             try {
                 const data = JSON.parse(saved);
-                balance = data.balance ?? 21000;
+                balance = data.balance ?? 31000;
                 currentRound = data.currentRound ?? 1;
                 winStreak = data.winStreak ?? 0;
                 bet = data.bet ?? 100;
@@ -745,6 +754,15 @@
                     for (let i = 0; i < currentRiskStep && i < multiplierCircles.length; i++) {
                         multiplierCircles[i].classList.add('active');
                         multiplierCircles[i].innerText = 'x' + multipliersList[i];
+                    }
+                    // скролл к последней открытой монетке
+                    if (currentRiskStep <= multiplierCircles.length) {
+                        const lastActiveCircle = multiplierCircles[currentRiskStep - 1];
+                        if (lastActiveCircle) {
+                            setTimeout(() => {
+                                lastActiveCircle.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                            }, 100);
+                        }
                     }
                 } else {
                     actionButtons.style.display = 'none';
