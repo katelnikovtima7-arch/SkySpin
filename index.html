@@ -66,15 +66,17 @@
             font-size: 0.6rem;
             color: #5A6E8A;
         }
-        /* горизонтальный скролл с маской (видно 4 кружка, остальные скрыты) */
+        /* горизонтальный скролл без полосы прокрутки */
         .multiplier-strip-wrapper {
             overflow-x: auto;
             overflow-y: hidden;
             padding: 16px 16px 8px 16px;
             flex-shrink: 0;
-            scrollbar-width: thin;
-            mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .multiplier-strip-wrapper::-webkit-scrollbar {
+            display: none;
         }
         .multiplier-strip {
             display: flex;
@@ -102,7 +104,12 @@
             color: white;
             box-shadow: 0 0 8px #2f9eff;
         }
-        /* центральная секция: РАУНД + монета + КЭФ */
+        /* маска: левая монетка видна полностью, правая наполовину */
+        .multiplier-strip-wrapper {
+            mask-image: linear-gradient(to right, black 0%, black 85%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, black 0%, black 85%, transparent 100%);
+        }
+        /* центральная секция */
         .center-stats {
             display: flex;
             align-items: center;
@@ -123,7 +130,6 @@
             font-size: 0.6rem;
             color: #5A6E8A;
         }
-        /* главная монета — ровно по центру */
         .main-coin {
             text-align: center;
         }
@@ -299,7 +305,6 @@
             border-top: 1px solid #1A2438;
             padding: 10px 16px 20px;
             flex-shrink: 0;
-            margin-top: auto;
         }
         .nav-item {
             display: flex;
@@ -328,14 +333,10 @@
         </div>
     </div>
 
-    <!-- 12 монеток (кружки) с горизонтальным скроллом + маска (видно 4 штуки) -->
     <div class="multiplier-strip-wrapper">
-        <div class="multiplier-strip" id="multiplierStrip">
-            <!-- 12 кружков будут созданы через JS -->
-        </div>
+        <div class="multiplier-strip" id="multiplierStrip"></div>
     </div>
 
-    <!-- центральная секция: РАУНД (слева), монета (центр), КЭФ (справа) -->
     <div class="center-stats">
         <div class="stat-item">
             <div class="value" id="roundNum">1</div>
@@ -410,11 +411,11 @@
     const BASE_MULTIPLIER = 1.95;
 
     let riskActive = false;
-    let currentRiskStep = 0;        // 0..12 (сколько монеток открыто)
+    let currentRiskStep = 0;
     let currentRiskMultiplier = 1.0;
     let currentRiskStake = 0;
     
-    // Генерация 12 множителей (каждый следующий = предыдущий * 1.95)
+    // 12 множителей
     let multipliersList = [];
     let mult = 1.95;
     for (let i = 0; i < 12; i++) {
@@ -446,8 +447,6 @@
         for (let i = 0; i < 12; i++) {
             const circle = document.createElement('div');
             circle.className = 'multiplier-circle';
-            circle.setAttribute('data-step', i);
-            circle.setAttribute('data-mult', multipliersList[i]);
             circle.innerText = '?';
             multiplierStrip.appendChild(circle);
         }
@@ -467,9 +466,11 @@
         }
         // автоскролл к последней открытой монетке
         if (currentRiskStep > 0 && currentRiskStep <= multiplierCircles.length) {
-            const lastActiveCircle = multiplierCircles[currentRiskStep - 1];
-            if (lastActiveCircle) {
-                lastActiveCircle.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            const wrapper = document.querySelector('.multiplier-strip-wrapper');
+            const lastCircle = multiplierCircles[currentRiskStep - 1];
+            if (lastCircle && wrapper) {
+                const scrollLeft = lastCircle.offsetLeft - wrapper.offsetWidth / 2 + lastCircle.offsetWidth / 2;
+                wrapper.scrollTo({ left: scrollLeft, behavior: 'smooth' });
             }
         }
     }
@@ -755,15 +756,14 @@
                         multiplierCircles[i].classList.add('active');
                         multiplierCircles[i].innerText = 'x' + multipliersList[i];
                     }
-                    // скролл к последней открытой монетке
-                    if (currentRiskStep <= multiplierCircles.length) {
-                        const lastActiveCircle = multiplierCircles[currentRiskStep - 1];
-                        if (lastActiveCircle) {
-                            setTimeout(() => {
-                                lastActiveCircle.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                            }, 100);
+                    setTimeout(() => {
+                        const wrapper = document.querySelector('.multiplier-strip-wrapper');
+                        const lastCircle = multiplierCircles[currentRiskStep - 1];
+                        if (lastCircle && wrapper) {
+                            const scrollLeft = lastCircle.offsetLeft - wrapper.offsetWidth / 2 + lastCircle.offsetWidth / 2;
+                            wrapper.scrollTo({ left: scrollLeft, behavior: 'smooth' });
                         }
-                    }
+                    }, 100);
                 } else {
                     actionButtons.style.display = 'none';
                     playBtn.style.display = 'block';
