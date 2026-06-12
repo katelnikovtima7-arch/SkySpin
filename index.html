@@ -66,13 +66,18 @@
             font-size: 0.6rem;
             color: #5A6E8A;
         }
-        /* три монетки (кружки) над основной монетой */
-        .multiplier-strip {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
+        /* горизонтальный скролл для 12 монеток */
+        .multiplier-strip-wrapper {
+            overflow-x: auto;
+            overflow-y: hidden;
             padding: 16px 16px 8px 16px;
             flex-shrink: 0;
+            scrollbar-width: thin;
+        }
+        .multiplier-strip {
+            display: flex;
+            gap: 12px;
+            min-width: min-content;
         }
         .multiplier-circle {
             width: 55px;
@@ -81,12 +86,13 @@
             background: #1A2438;
             border: 1px solid #2A3A50;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
+            font-weight: bold;
             color: #5A6E8A;
             transition: all 0.2s;
+            flex-shrink: 0;
         }
         .multiplier-circle.active {
             background: #2F9EFF;
@@ -94,40 +100,25 @@
             color: white;
             box-shadow: 0 0 8px #2f9eff;
         }
-        .multiplier-circle .mult-value {
-            font-size: 0.85rem;
-            font-weight: bold;
-        }
-        .multiplier-circle .mult-label {
-            font-size: 0.55rem;
-        }
-        /* центральная секция: РАУНД + монета + КЭФ */
+        /* центральная секция: РАУНД + монета + КЭФ (без кружков) */
         .center-stats {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 30px;
+            gap: 40px;
             padding: 10px 16px;
             flex-shrink: 0;
         }
-        .stat-circle {
-            background: #1A2438;
-            border-radius: 50%;
-            width: 70px;
-            height: 70px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #2A3A50;
+        .stat-item {
+            text-align: center;
         }
-        .stat-circle .value {
-            font-size: 1.3rem;
+        .stat-item .value {
+            font-size: 1.5rem;
             font-weight: 700;
             color: white;
         }
-        .stat-circle .label {
-            font-size: 0.55rem;
+        .stat-item .label {
+            font-size: 0.6rem;
             color: #5A6E8A;
         }
         /* главная монета */
@@ -330,37 +321,28 @@
         <div class="logo">StarsFlip</div>
         <div class="how-btn" id="howBtn">Как играть</div>
         <div class="balance-top">
-            <div class="amount" id="balanceValue">11000</div>
+            <div class="amount" id="balanceValue">21000</div>
             <div class="label">⭐ STARS</div>
         </div>
     </div>
 
-    <!-- три монетки (кружки) над основной монетой -->
-    <div class="multiplier-strip" id="multiplierStrip">
-        <div class="multiplier-circle" data-step="0">
-            <div class="mult-value" id="multValue0">x1.95</div>
-            <div class="mult-label">ШАГ 1</div>
-        </div>
-        <div class="multiplier-circle" data-step="1">
-            <div class="mult-value" id="multValue1">x3.80</div>
-            <div class="mult-label">ШАГ 2</div>
-        </div>
-        <div class="multiplier-circle" data-step="2">
-            <div class="mult-value" id="multValue2">x7.41</div>
-            <div class="mult-label">ШАГ 3</div>
+    <!-- 12 монеток (кружки) с горизонтальным скроллом -->
+    <div class="multiplier-strip-wrapper">
+        <div class="multiplier-strip" id="multiplierStrip">
+            <!-- 12 кружков будут созданы через JS -->
         </div>
     </div>
 
-    <!-- центральная секция: РАУНД слева, монета центр, КЭФ справа -->
+    <!-- центральная секция: РАУНД (слева), монета (центр), КЭФ (справа) - без кружков -->
     <div class="center-stats">
-        <div class="stat-circle">
+        <div class="stat-item">
             <div class="value" id="roundNum">1</div>
             <div class="label">РАУНД</div>
         </div>
         <div class="main-coin">
             <img src="IMG_0944-photos.png" alt="монета" id="mainCoinImg">
         </div>
-        <div class="stat-circle">
+        <div class="stat-item">
             <div class="value">x1.95</div>
             <div class="label">КЭФ</div>
         </div>
@@ -417,7 +399,7 @@
 </div>
 <script>
     // ------------------- ОСНОВНЫЕ ПАРАМЕТРЫ -------------------
-    let balance = 11000;
+    let balance = 21000;
     let currentRound = 1;
     let winStreak = 0;
     let bet = 100;
@@ -426,10 +408,17 @@
     const BASE_MULTIPLIER = 1.95;
 
     let riskActive = false;
-    let currentRiskStep = 0;        // 0,1,2 (сколько монеток открыто)
+    let currentRiskStep = 0;        // 0..12 (сколько монеток открыто)
     let currentRiskMultiplier = 1.0;
     let currentRiskStake = 0;
-    let multipliersList = [1.95, 3.80, 7.41];  // для трёх шагов
+    
+    // Генерация 12 множителей (каждый следующий = предыдущий * 1.95)
+    let multipliersList = [];
+    let mult = 1.95;
+    for (let i = 0; i < 12; i++) {
+        multipliersList.push(parseFloat(mult.toFixed(2)));
+        mult = mult * 1.95;
+    }
 
     // DOM элементы
     const balanceEl = document.getElementById('balanceValue');
@@ -448,7 +437,41 @@
     const choiceArea = document.querySelector('.choice-area');
     const betPanel = document.querySelector('.bet-panel');
     const multiplierStrip = document.getElementById('multiplierStrip');
+
+    // Создание 12 кружков
+    function createMultiplierCircles() {
+        multiplierStrip.innerHTML = '';
+        for (let i = 0; i < 12; i++) {
+            const circle = document.createElement('div');
+            circle.className = 'multiplier-circle';
+            circle.setAttribute('data-step', i);
+            circle.setAttribute('data-mult', multipliersList[i]);
+            circle.innerText = '?';
+            multiplierStrip.appendChild(circle);
+        }
+    }
+    createMultiplierCircles();
     const multiplierCircles = document.querySelectorAll('.multiplier-circle');
+
+    function updateMultiplierCircles() {
+        for (let i = 0; i < multiplierCircles.length; i++) {
+            if (i < currentRiskStep) {
+                multiplierCircles[i].classList.add('active');
+                multiplierCircles[i].innerText = 'x' + multipliersList[i];
+            } else {
+                multiplierCircles[i].classList.remove('active');
+                multiplierCircles[i].innerText = '?';
+            }
+        }
+    }
+
+    function resetMultiplierCircles() {
+        currentRiskStep = 0;
+        for (let i = 0; i < multiplierCircles.length; i++) {
+            multiplierCircles[i].classList.remove('active');
+            multiplierCircles[i].innerText = '?';
+        }
+    }
 
     function updateBalanceUI() {
         balanceEl.innerText = Math.floor(balance);
@@ -482,25 +505,6 @@
             else el.classList.remove('selected');
         });
         saveGame();
-    }
-
-    function updateMultiplierCircles() {
-        for (let i = 0; i < multiplierCircles.length; i++) {
-            if (i < currentRiskStep) {
-                multiplierCircles[i].classList.add('active');
-                const multValueSpan = multiplierCircles[i].querySelector('.mult-value');
-                if (multValueSpan) multValueSpan.innerText = 'x' + multipliersList[i].toFixed(2);
-            } else {
-                multiplierCircles[i].classList.remove('active');
-            }
-        }
-    }
-
-    function resetMultiplierCircles() {
-        currentRiskStep = 0;
-        for (let i = 0; i < multiplierCircles.length; i++) {
-            multiplierCircles[i].classList.remove('active');
-        }
     }
 
     function animateCoin(result) {
@@ -548,13 +552,13 @@
         animateCoin(result);
         if (isWin) {
             currentRiskStep++;
-            if (currentRiskStep <= 3) {
+            if (currentRiskStep <= 12) {
                 currentRiskMultiplier = multipliersList[currentRiskStep - 1];
                 currentRiskStake = Math.floor(bet * currentRiskMultiplier);
                 updateMultiplierCircles();
                 addHistory(`🪙 РИСК: ${result} ✅ ВЫИГРЫШ! МНОЖИТЕЛЬ ${currentRiskMultiplier.toFixed(2)}x, СУММА ${currentRiskStake} ⭐`, 'win');
                 winStreak++;
-                if (currentRiskStep >= 3) {
+                if (currentRiskStep >= 12) {
                     addHistory(`🏆 МАКСИМАЛЬНЫЙ МНОЖИТЕЛЬ! ЗАБИРАЙ ВЫИГРЫШ`, 'win');
                 }
             }
@@ -622,7 +626,7 @@
             choiceArea.style.display = 'flex';
             betPanel.style.display = 'flex';
             historySection.style.display = 'block';
-            multiplierStrip.style.display = 'flex';
+            document.querySelector('.multiplier-strip-wrapper').style.display = 'block';
             dynamicContent.style.display = 'none';
             if (riskActive) {
                 actionButtons.style.display = 'flex';
@@ -639,7 +643,7 @@
             playBtn.style.display = 'none';
             actionButtons.style.display = 'none';
             historySection.style.display = 'none';
-            multiplierStrip.style.display = 'none';
+            document.querySelector('.multiplier-strip-wrapper').style.display = 'none';
             dynamicContent.style.display = 'flex';
         }
     }
@@ -722,7 +726,7 @@
         if (saved) {
             try {
                 const data = JSON.parse(saved);
-                balance = data.balance ?? 11000;
+                balance = data.balance ?? 21000;
                 currentRound = data.currentRound ?? 1;
                 winStreak = data.winStreak ?? 0;
                 bet = data.bet ?? 100;
@@ -738,9 +742,9 @@
                 if (riskActive && currentRiskStep > 0) {
                     actionButtons.style.display = 'flex';
                     playBtn.style.display = 'none';
-                    currentRiskStep = Math.min(currentRiskStep, 3);
-                    for (let i = 0; i < currentRiskStep; i++) {
+                    for (let i = 0; i < currentRiskStep && i < multiplierCircles.length; i++) {
                         multiplierCircles[i].classList.add('active');
+                        multiplierCircles[i].innerText = 'x' + multipliersList[i];
                     }
                 } else {
                     actionButtons.style.display = 'none';
@@ -781,7 +785,7 @@
     riskBtn.addEventListener('click', riskFlip);
 
     document.getElementById('howBtn').addEventListener('click', () => {
-        alert(`⭐ STARSFLIP — игра на монетке\n\nПРАВИЛА:\n1. Сделай ставку и выбери ОРЁЛ или РЕШКА\n2. Если угадал → можешь ЗАБРАТЬ или КРУТИТЬ ДАЛЬШЕ\n3. При каждом успешном КРУТИТЬ открывается новая монетка и растёт множитель\n4. Максимум 3 шага (x1.95 → x3.80 → x7.41)\n5. При проигрыше теряешь всё\n\nИграй честно, удачи!`);
+        alert(`⭐ STARSFLIP — игра на монетке\n\nПРАВИЛА:\n1. Сделай ставку и выбери ОРЁЛ или РЕШКА\n2. Если угадал → можешь ЗАБРАТЬ или КРУТИТЬ ДАЛЬШЕ\n3. При каждом успешном КРУТИТЬ открывается новая монетка и растёт множитель\n4. Всего 12 шагов, максимальный множитель x${multipliersList[11]}\n5. При проигрыше теряешь всё\n\nИграй честно, удачи!`);
     });
 
     loadGame();
