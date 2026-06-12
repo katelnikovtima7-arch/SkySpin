@@ -66,7 +66,7 @@
             font-size: 0.6rem;
             color: #5A6E8A;
         }
-        /* горизонтальный скролл без полосы прокрутки */
+        /* горизонтальный скролл без полосы */
         .multiplier-strip-wrapper {
             overflow-x: auto;
             overflow-y: hidden;
@@ -74,6 +74,8 @@
             flex-shrink: 0;
             scrollbar-width: none;
             -ms-overflow-style: none;
+            mask-image: linear-gradient(to right, black 0%, black 85%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, black 0%, black 85%, transparent 100%);
         }
         .multiplier-strip-wrapper::-webkit-scrollbar {
             display: none;
@@ -104,12 +106,6 @@
             color: white;
             box-shadow: 0 0 8px #2f9eff;
         }
-        /* маска: левая монетка видна полностью, правая наполовину */
-        .multiplier-strip-wrapper {
-            mask-image: linear-gradient(to right, black 0%, black 85%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to right, black 0%, black 85%, transparent 100%);
-        }
-        /* центральная секция */
         .center-stats {
             display: flex;
             align-items: center;
@@ -328,7 +324,7 @@
         <div class="logo">StarsFlip</div>
         <div class="how-btn" id="howBtn">Как играть</div>
         <div class="balance-top">
-            <div class="amount" id="balanceValue">31000</div>
+            <div class="amount" id="balanceValue">50000</div>
             <div class="label">⭐ STARS</div>
         </div>
     </div>
@@ -402,7 +398,7 @@
 </div>
 <script>
     // ------------------- ОСНОВНЫЕ ПАРАМЕТРЫ -------------------
-    let balance = 31000;
+    let balance = 50000;
     let currentRound = 1;
     let winStreak = 0;
     let bet = 100;
@@ -736,7 +732,7 @@
         if (saved) {
             try {
                 const data = JSON.parse(saved);
-                balance = data.balance ?? 31000;
+                balance = data.balance ?? 50000;
                 currentRound = data.currentRound ?? 1;
                 winStreak = data.winStreak ?? 0;
                 bet = data.bet ?? 100;
