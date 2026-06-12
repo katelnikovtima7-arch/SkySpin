@@ -66,7 +66,6 @@
             font-size: 0.6rem;
             color: #5A6E8A;
         }
-        /* горизонтальный скролл без полосы */
         .multiplier-strip-wrapper {
             overflow-x: auto;
             overflow-y: hidden;
@@ -460,7 +459,6 @@
                 multiplierCircles[i].innerText = '?';
             }
         }
-        // автоскролл к последней открытой монетке
         if (currentRiskStep > 0 && currentRiskStep <= multiplierCircles.length) {
             const wrapper = document.querySelector('.multiplier-strip-wrapper');
             const lastCircle = multiplierCircles[currentRiskStep - 1];
